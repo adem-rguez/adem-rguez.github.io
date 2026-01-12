@@ -592,10 +592,13 @@ print 'It took ' + i + ' iterations to sort the deck.';
 					}
 				};
 
-				let currentLang = 'en';
+				let currentLang = localStorage.getItem('lang') || 'en';
+				document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+				updateLanguage();
 
 				document.getElementById('lang-toggle').addEventListener('click', () => {
 					currentLang = currentLang === 'en' ? 'fr' : 'en';
+					localStorage.setItem('lang', currentLang);
 					document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
 					updateLanguage();
 				});

@@ -159,14 +159,14 @@ Automated the content creation process for educational content, reducing time fr
 <h2 data-lang="skills-title">Skills & Technologies</h2>
 </header>
 <ul>
-<li><strong>Unity & C#:</strong> Expert (shipped 21 applications on Google Play Store)</li>
-<li><strong>Git:</strong> Advanced (version control and collaborative coding)</li>
-<li><strong>PHP & SQL:</strong> Advanced (backend implementation and data retrieval)</li>
-<li><strong>Programming:</strong> Python, C++, Java, JavaScript</li>
-<li><strong>Web Development:</strong> WordPress (built website: smoothhire.org)</li>
-<li><strong>3D Tools:</strong> Blender (Amateur)</li>
-<li><strong>AI:</strong> LLMs, Microsoft Azure, Google Cloud</li>
-<li><strong>Other:</strong> WPF .Net, REST API, OpenCV, IBM Watson SDK</li>
+<li data-lang="skills-unity"><strong>Unity & C#:</strong> Expert (shipped 21 applications on Google Play Store)</li>
+<li data-lang="skills-git"><strong>Git:</strong> Advanced (version control and collaborative coding)</li>
+<li data-lang="skills-php"><strong>PHP & SQL:</strong> Advanced (backend implementation and data retrieval)</li>
+<li data-lang="skills-prog"><strong>Programming:</strong> Python, C++, Java, JavaScript</li>
+<li data-lang="skills-web"><strong>Web Development:</strong> WordPress (built website: smoothhire.org)</li>
+<li data-lang="skills-3d"><strong>3D Tools:</strong> Blender (Amateur)</li>
+<li data-lang="skills-ai"><strong>AI:</strong> LLMs, Microsoft Azure, Google Cloud</li>
+<li data-lang="skills-other"><strong>Other:</strong> WPF .Net, REST API, OpenCV, IBM Watson SDK</li>
 </ul>
 </section>
 
@@ -291,8 +291,16 @@ Automated the content creation process for educational content, reducing time fr
 						"recent-project": "Recent Project",
 						"learn-more": "Learn More",
 						"about-title": "About",
-						"about-text": "I’m a Unity developer with experience delivering both consumer games and enterprise training simulations. I focus on building clean, scalable systems and reliable interactive experiences under real production constraints.",
+						"about-text": "Passionate C# / Unity Developer seeking challenging opportunities in game or software development to leverage a solid foundation in game and application development, enhanced by skills in problem-solving, fast learning, and teamwork. With a proficient grasp of technologies like Unity, C# and backend development, I excel in creating simulations and enhancing workflow efficiencies. Successfully shipped 21 3D applications on the Google Play Store, demonstrating a drive for achieving impactful results in collaborative settings, aiming to contribute to forward-thinking software solutions in a dynamic, innovative environment.",
 						"skills-title": "Skills & Technologies",
+						"skills-unity": "Unity & C#: Expert (shipped 21 applications on Google Play Store)",
+						"skills-git": "Git: Advanced (version control and collaborative coding)",
+						"skills-php": "PHP & SQL: Advanced (backend implementation and data retrieval)",
+						"skills-prog": "Programming: Python, C++, Java, JavaScript",
+						"skills-web": "Web Development: WordPress (built website: smoothhire.org)",
+						"skills-3d": "3D Tools: Blender (Amateur)",
+						"skills-ai": "AI: LLMs, Microsoft Azure, Google Cloud",
+						"skills-other": "Other: WPF .Net, REST API, OpenCV, IBM Watson SDK",
 						"experience-title": "Experience",
 						"education-title": "Education",
 						"education-text": "Bachelor's Degree in Computer Science<br />Higher Institute of Applied Science and Technology of Sousse, Tunisia<br />September 2018 - July 2021",
@@ -315,8 +323,16 @@ Automated the content creation process for educational content, reducing time fr
 						"recent-project": "Projet Récent",
 						"learn-more": "En Savoir Plus",
 						"about-title": "À Propos",
-						"about-text": "Je suis un développeur Unity avec de l'expérience dans la livraison de jeux grand public et de simulations de formation d'entreprise. Je me concentre sur la construction de systèmes propres, évolutifs et d'expériences interactives fiables sous contraintes de production réelles.",
+						"about-text": "Développeur Unity passionné en C# cherchant des opportunités stimulantes dans le développement de jeux ou de logiciels pour tirer parti d'une base solide en développement de jeux et d'applications, enrichie par des compétences en résolution de problèmes, apprentissage rapide et travail d'équipe. Avec une maîtrise compétente des technologies comme Unity, C# et le développement backend, j'excelle dans la création de simulations et l'amélioration des efficacités de workflow. Ayant réussi à expédier 21 applications 3D sur Google Play Store, démontrant une volonté d'atteindre des résultats impactants dans des environnements collaboratifs, visant à contribuer à des solutions logicielles innovantes et avant-gardistes dans un environnement dynamique et innovant.",
 						"skills-title": "Compétences & Technologies",
+						"skills-unity": "Unity & C#: Expert (21 applications expédiées sur Google Play Store)",
+						"skills-git": "Git: Avancé (contrôle de version et codage collaboratif)",
+						"skills-php": "PHP & SQL: Avancé (implémentation backend et récupération de données)",
+						"skills-prog": "Programmation: Python, C++, Java, JavaScript",
+						"skills-web": "Développement Web: WordPress (site construit: smoothhire.org)",
+						"skills-3d": "Outils 3D: Blender (Amateur)",
+						"skills-ai": "IA: LLMs, Microsoft Azure, Google Cloud",
+						"skills-other": "Autre: WPF .Net, REST API, OpenCV, IBM Watson SDK",
 						"experience-title": "Expérience",
 						"education-title": "Éducation",
 						"education-text": "Licence en Informatique<br />Institut Supérieur des Sciences Appliquées et de Technologie de Sousse, Tunisie<br />Septembre 2018 - Juillet 2021",
@@ -331,10 +347,13 @@ Automated the content creation process for educational content, reducing time fr
 					}
 				};
 
-				let currentLang = 'en';
+				let currentLang = localStorage.getItem('lang') || 'en';
+				document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+				updateLanguage();
 
 				document.getElementById('lang-toggle').addEventListener('click', () => {
 					currentLang = currentLang === 'en' ? 'fr' : 'en';
+					localStorage.setItem('lang', currentLang);
 					document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
 					updateLanguage();
 				});
