@@ -36,6 +36,7 @@
 							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 							<li><a href="https://github.com/adem-rguez" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						</ul>
+						<button id="lang-toggle" style="background: #f56a6a; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-left: 10px;">FR</button>
 					</nav>
 
 				<!-- Main -->
@@ -53,12 +54,12 @@
 								<p>I have experience in developing editor tools to enhance and expedite workflows, streamlining the development process and improving team productivity. I assess the viability of software prototypes, provide crucial feedback that informs project directions, and rectify coding errors to ensure optimal functionality, significantly reducing system downtimes.</p>
 								<h2>Languages</h2>
 								<ul>
-									<li><strong>Arabic:</strong> Native</li>
+									<li><strong>Arabic:</strong> Fluent</li>
 									<li><strong>English:</strong> Fluent</li>
 									<li><strong>French:</strong> Fluent</li>
+									<li><strong>Japanese:</strong> Basic</li>
+									<li><strong>German:</strong> Basic</li>
 								</ul>
-								<h2>Search Area</h2>
-								<p>France and nearby countries</p>
 							</section>
 
 					</div>
@@ -127,6 +128,37 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+				const translations = {
+					en: {
+						"home": "Home",
+						"about": "About",
+						"projects": "Projects"
+					},
+					fr: {
+						"home": "Accueil",
+						"about": "À Propos",
+						"projects": "Projets"
+					}
+				};
+
+				let currentLang = 'en';
+
+				document.getElementById('lang-toggle').addEventListener('click', () => {
+					currentLang = currentLang === 'en' ? 'fr' : 'en';
+					document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+					updateLanguage();
+				});
+
+				function updateLanguage() {
+					document.querySelectorAll('[data-lang]').forEach(el => {
+						const key = el.getAttribute('data-lang');
+						if (translations[currentLang][key]) {
+							el.innerHTML = translations[currentLang][key];
+						}
+					});
+				}
+			</script>
 
 	</body>
 </html>

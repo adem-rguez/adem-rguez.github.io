@@ -36,6 +36,7 @@
 							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 							<li><a href="https://github.com/adem-rguez" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						</ul>
+						<button id="lang-toggle" style="background: #f56a6a; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-left: 10px;">FR</button>
 					</nav>
 
 				<!-- Main -->
@@ -44,7 +45,7 @@
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<h1>My<br />
+									<h1 data-lang="my-projects">My<br />
 									Projects</h1>
 									<p>A showcase of my work in Unity development, from games to simulations.</p>
 								</header>
@@ -575,6 +576,39 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+				const translations = {
+					en: {
+						"home": "Home",
+						"about": "About",
+						"projects": "Projects",
+						"my-projects": "My Projects"
+					},
+					fr: {
+						"home": "Accueil",
+						"about": "À Propos",
+						"projects": "Projets",
+						"my-projects": "Mes Projets"
+					}
+				};
+
+				let currentLang = 'en';
+
+				document.getElementById('lang-toggle').addEventListener('click', () => {
+					currentLang = currentLang === 'en' ? 'fr' : 'en';
+					document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+					updateLanguage();
+				});
+
+				function updateLanguage() {
+					document.querySelectorAll('[data-lang]').forEach(el => {
+						const key = el.getAttribute('data-lang');
+						if (translations[currentLang][key]) {
+							el.innerHTML = translations[currentLang][key];
+						}
+					});
+				}
+			</script>
 
 	</body>
 </html>
