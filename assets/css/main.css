@@ -3494,6 +3494,7 @@ input, select, textarea {
 
 	#header {
 		color: #ffffff;
+		background-color: rgba(0, 0, 0, 0.5);
 		-moz-align-items: center;
 		-webkit-align-items: center;
 		-ms-align-items: center;
