@@ -25,9 +25,9 @@
 				<!-- Nav -->
 					<nav id="nav">
 						<ul class="links">
-							<li><a href="index.html">Home</a></li>
-							<li class="active"><a href="about.html">About</a></li>
-							<li><a href="projects.html">Projects</a></li>
+							<li><a href="index.html" data-lang="home">Home</a></li>
+							<li class="active"><a href="about.html" data-lang="about">About</a></li>
+							<li><a href="projects.html" data-lang="projects">Projects</a></li>
 						</ul>
 						<ul class="icons">
 							<li><a href="https://www.linkedin.com/in/adem-rguez" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
@@ -42,13 +42,13 @@
 						<!-- Post -->
 							<section class="post">
 								<header class="major">
-									<h1>About<br />
+									<h1 data-lang="about-title">About<br />
 									Me</h1>
 									<p>Passionate C# / Unity Developer seeking challenging opportunities in game or software development.</p>
 								</header>
 								<div class="image main"><img src="images/pic01.jpg" alt="Adem Rguez" /></div>
 								<p data-lang="about-text">Passionate C# / Unity Developer seeking challenging opportunities in game or software development to leverage a solid foundation in game and application development, enhanced by skills in problem-solving, fast learning, and teamwork. With a proficient grasp of technologies like Unity, C# and backend development, I excel in creating simulations and enhancing workflow efficiencies. Successfully shipped 21 3D applications on the Google Play Store, demonstrating a drive for achieving impactful results in collaborative settings, aiming to contribute to forward-thinking software solutions in a dynamic, innovative environment.</p>
-								<p>I have experience in developing editor tools to enhance and expedite workflows, streamlining the development process and improving team productivity. I assess the viability of software prototypes, provide crucial feedback that informs project directions, and rectify coding errors to ensure optimal functionality, significantly reducing system downtimes.</p>
+								<p data-lang="about-extra">I have experience in developing editor tools to enhance and expedite workflows, streamlining the development process and improving team productivity. I assess the viability of software prototypes, provide crucial feedback that informs project directions, and rectify coding errors to ensure optimal functionality, significantly reducing system downtimes.</p>
 								<h2 data-lang="languages-title">Languages</h2>
 								<ul>
 									<li data-lang="arabic"><strong>Arabic:</strong> Fluent</li>
@@ -67,38 +67,38 @@
 							<form method="post" action="mailto:Adem23199@gmail.com" enctype="text/plain">
 								<div class="fields">
 									<div class="field">
-										<label for="name">Name</label>
+										<label for="name" data-lang="name">Name</label>
 										<input type="text" name="name" id="name" />
 									</div>
 									<div class="field">
-										<label for="email">Email</label>
+										<label for="email" data-lang="email">Email</label>
 										<input type="text" name="email" id="email" />
 									</div>
 									<div class="field">
-										<label for="message">Message</label>
+										<label for="message" data-lang="message">Message</label>
 										<textarea name="message" id="message" rows="3"></textarea>
 									</div>
 								</div>
 								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
+									<li><input type="submit" value="Send Message" data-lang="send-message" /></li>
 								</ul>
 							</form>
 						</section>
 						<section class="split contact">
 							<section class="alt">
-								<h3>Location</h3>
+								<h3 data-lang="location">Location</h3>
 								<p>Rennes, France</p>
 							</section>
 							<section>
-								<h3>Phone</h3>
+								<h3 data-lang="phone">Phone</h3>
 								<p><a href="tel:+330785360450">+33 07 85 36 04 50</a></p>
 							</section>
 							<section>
-								<h3>Email</h3>
+								<h3 data-lang="email">Email</h3>
 								<p><a href="mailto:Adem23199@gmail.com">Adem23199@gmail.com</a></p>
 							</section>
 							<section>
-								<h3>Social</h3>
+								<h3 data-lang="social">Social</h3>
 								<ul class="icons alt">
 									<li><a href="https://www.linkedin.com/in/adem-rguez" class="icon brands alt fa-linkedin"><span class="label">LinkedIn</span></a></li>
 									<li><a href="https://www.malt.fr/profile/ademrguez"><img src="https://www.appvizer.fr/media/application/29443/logo/logo-malt.png" alt="Malt" style="width: 20px; height: 20px; vertical-align: middle;"><span class="label"></span></a></li>
@@ -139,12 +139,21 @@
 						"home": "Accueil",
 						"about": "À Propos",
 						"projects": "Projets",
+						"about-title": "À Propos<br />De Moi",
+						"about-extra": "J'ai de l'expérience dans le développement d'outils d'éditeur pour améliorer et accélérer les workflows, rationalisant le processus de développement et améliorant la productivité de l'équipe.",
 						"languages-title": "Langues",
 						"arabic": "Arabe: Courant",
 						"english": "Anglais: Courant",
 						"french": "Français: Courant",
 						"japanese": "Japonais: Basique",
-						"german": "Allemand: Basique"
+						"german": "Allemand: Basique",
+						"name": "Nom",
+						"email": "Email",
+						"message": "Message",
+						"send-message": "Envoyer le Message",
+						"location": "Localisation",
+						"phone": "Téléphone",
+						"social": "Réseaux Sociaux"
 					}
 				};
 
