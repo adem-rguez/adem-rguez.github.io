@@ -3494,7 +3494,11 @@ input, select, textarea {
 
 	#header {
 		color: #ffffff;
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0);
+		-moz-transition: background-color 0.5s ease;
+		-webkit-transition: background-color 0.5s ease;
+		-ms-transition: background-color 0.5s ease;
+		transition: background-color 0.5s ease;
 		-moz-align-items: center;
 		-webkit-align-items: center;
 		-ms-align-items: center;
@@ -3522,6 +3526,10 @@ input, select, textarea {
 		text-align: center;
 		z-index: 2;
 	}
+
+		#intro.hidden + #header {
+			background-color: rgba(0, 0, 0, 0.5);
+		}
 
 		#header h1, #header p {
 			-moz-transition: opacity 0.5s ease, -moz-transform 0.5s ease;
