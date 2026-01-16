@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V3 BY Adem Rguez
+	V4 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -11,7 +11,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; }</style>
+		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; }</style>
 	</head>
 	<body class="is-preload">
 
@@ -39,7 +39,7 @@
 
 				<!-- 3D Background -->
 				<canvas id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 150vh; z-index: -2;"></canvas>
-				<div id="enter-btn" style="position: fixed; bottom: 10vh; left: 50%; transform: translateX(-50%); z-index: 10;">
+				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
 					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer;">Enter Portfolio</button>
 				</div>
 
@@ -607,17 +607,13 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				gridHelper.material.transparent = true;
 				scene.add(gridHelper);
 
-				// Texture loader
-				const textureLoader = new THREE.TextureLoader();
-				const unityTexture = textureLoader.load('https://logos-world.net/wp-content/uploads/2021/11/Unity-Emblem.png'); // Unity logo
-
 				// Floating panels
 				const panels = [];
 				for (let i = 0; i < 6; i++) {
 					const width = 2;
 					const height = 2;
 					const geometry = new THREE.PlaneGeometry(width, height);
-					const material = new THREE.MeshLambertMaterial({ map: unityTexture, transparent: true, opacity: 0.9 });
+					const material = new THREE.MeshLambertMaterial({ color: 0x4A90E2, transparent: true, opacity: 0.9 }); // Unity blue
 					const panel = new THREE.Mesh(geometry, material);
 					panel.position.set((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 2);
 					panel.rotation.set(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1);
@@ -668,7 +664,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 					mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 					mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 					raycaster.setFromCamera(mouse, camera);
-					const intersects = raycaster.intersectObjects(panels.map(p => p.mesh));
+					const intersects = raycaster.intersectObjects(scene.children.filter(o => o.geometry.type === 'PlaneGeometry'));
 					if (intersects.length > 0) {
 						selectedBody = panels.find(p => p.mesh === intersects[0].object).body;
 						isDragging = true;
