@@ -664,8 +664,9 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				document.addEventListener('mousedown', (event) => {
 					mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 					mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+					camera.updateMatrixWorld();
 					raycaster.setFromCamera(mouse, camera);
-					const intersects = raycaster.intersectObjects(scene.children.filter(o => o.geometry.type === 'PlaneGeometry'));
+					const intersects = raycaster.intersectObjects(scene.children);
 					if (intersects.length > 0) {
 						selectedBody = panels.find(p => p.mesh === intersects[0].object).body;
 						isDragging = true;
@@ -676,6 +677,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 					if (isDragging && selectedBody) {
 						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+						camera.updateMatrixWorld();
 						raycaster.setFromCamera(mouse, camera);
 						const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -selectedBody.position.z);
 						const point = new THREE.Vector3();
