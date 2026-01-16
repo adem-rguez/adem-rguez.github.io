@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
 		<style>#wrapper > .bg { z-index: -3; }</style>
 	</head>
 	<body class="is-preload">
@@ -37,7 +38,10 @@
 					</nav>
 
 				<!-- 3D Background -->
-				<canvas id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;"></canvas>
+				<canvas id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 150vh; z-index: -2;"></canvas>
+				<div id="enter-btn" style="position: fixed; bottom: 10vh; left: 50%; transform: translateX(-50%); z-index: 10;">
+					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer;">Enter Portfolio</button>
+				</div>
 
 				<!-- Main -->
 					<div id="main">
@@ -585,6 +589,10 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas') });
 				renderer.setSize(window.innerWidth, window.innerHeight);
 
+				// Physics world
+				const world = new CANNON.World();
+				world.gravity.set(0, 0, 0); // no gravity for floating
+
 				// Lighting
 				const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 				scene.add(ambientLight);
@@ -599,44 +607,107 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				gridHelper.material.transparent = true;
 				scene.add(gridHelper);
 
+				// Texture loader
+				const textureLoader = new THREE.TextureLoader();
+				const unityTexture = textureLoader.load('https://logos-world.net/wp-content/uploads/2021/11/Unity-Emblem.png'); // Unity logo
+
 				// Floating panels
 				const panels = [];
 				for (let i = 0; i < 6; i++) {
-					const geometry = new THREE.PlaneGeometry(Math.random() * 2 + 1, Math.random() * 1 + 0.5);
-					const material = new THREE.MeshLambertMaterial({ color: 0xeeeeee, transparent: true, opacity: 0.9 });
+					const width = 2;
+					const height = 2;
+					const geometry = new THREE.PlaneGeometry(width, height);
+					const material = new THREE.MeshLambertMaterial({ map: unityTexture, transparent: true, opacity: 0.9 });
 					const panel = new THREE.Mesh(geometry, material);
 					panel.position.set((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 2);
 					panel.rotation.set(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1);
 					scene.add(panel);
-					panels.push({ mesh: panel, speed: Math.random() * 0.01 + 0.005 });
+
+					// Physics body
+					const shape = new CANNON.Box(new CANNON.Vec3(width/2, height/2, 0.05));
+					const body = new CANNON.Body({ mass: 1 });
+					body.addShape(shape);
+					body.position.copy(panel.position);
+					body.quaternion.copy(panel.quaternion);
+					world.addBody(body);
+
+					panels.push({ mesh: panel, body: body, speed: Math.random() * 0.01 + 0.005 });
 				}
+
+				let scrollY = 0;
+				window.addEventListener('scroll', () => {
+					scrollY = window.scrollY;
+				});
 
 				// Animation
 				function animate() {
 					requestAnimationFrame(animate);
+					// Physics step
+					world.step(1/60);
+					// Sync meshes with bodies
+					panels.forEach(panel => {
+						panel.mesh.position.copy(panel.body.position);
+						panel.mesh.quaternion.copy(panel.body.quaternion);
+					});
 					// Slow drift
 					camera.position.x += Math.sin(Date.now() * 0.0005) * 0.001;
 					camera.position.y += Math.cos(Date.now() * 0.0005) * 0.001;
-					// Panel motion
-					panels.forEach(panel => {
-						panel.mesh.position.y += Math.sin(Date.now() * panel.speed) * 0.001;
-					});
+					// Scroll control
+					camera.position.z = 5 - scrollY * 0.01;
 					renderer.render(scene, camera);
 				}
 				animate();
 
-				// Mouse parallax
+				// Raycaster for interaction
+				const raycaster = new THREE.Raycaster();
+				const mouse = new THREE.Vector2();
+				let selectedBody = null;
+				let isDragging = false;
+
+				document.addEventListener('mousedown', (event) => {
+					mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+					mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+					raycaster.setFromCamera(mouse, camera);
+					const intersects = raycaster.intersectObjects(panels.map(p => p.mesh));
+					if (intersects.length > 0) {
+						selectedBody = panels.find(p => p.mesh === intersects[0].object).body;
+						isDragging = true;
+					}
+				});
+
 				document.addEventListener('mousemove', (event) => {
-					const x = (event.clientX / window.innerWidth) * 2 - 1;
-					const y = -(event.clientY / window.innerHeight) * 2 + 1;
-					camera.position.x = x * 0.1;
-					camera.position.y = y * 0.1;
+					if (isDragging && selectedBody) {
+						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+						raycaster.setFromCamera(mouse, camera);
+						const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -selectedBody.position.z);
+						const point = new THREE.Vector3();
+						raycaster.ray.intersectPlane(plane, point);
+						selectedBody.position.set(point.x, point.y, selectedBody.position.z);
+						selectedBody.velocity.set(0, 0, 0);
+					} else {
+						// Mouse parallax
+						const x = (event.clientX / window.innerWidth) * 2 - 1;
+						const y = -(event.clientY / window.innerHeight) * 2 + 1;
+						camera.position.x = x * 0.1;
+						camera.position.y = y * 0.1;
+					}
+				});
+
+				document.addEventListener('mouseup', () => {
+					selectedBody = null;
+					isDragging = false;
 				});
 
 				window.addEventListener('resize', () => {
 					camera.aspect = window.innerWidth / window.innerHeight;
 					camera.updateProjectionMatrix();
 					renderer.setSize(window.innerWidth, window.innerHeight);
+				});
+
+				// Enter button
+				document.getElementById('enter-btn').addEventListener('click', () => {
+					document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
 				});
 			</script>
 			<script>
