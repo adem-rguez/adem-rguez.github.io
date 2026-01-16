@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V4 BY Adem Rguez
+	V5 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -11,7 +11,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; }</style>
+		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; } #nav a { color: #4A90E2 !important; }</style>
 	</head>
 	<body class="is-preload">
 
@@ -39,6 +39,7 @@
 
 				<!-- 3D Background -->
 				<canvas id="threejs-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 150vh; z-index: -2;"></canvas>
+				<div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; color: white; font-size: 2rem; font-weight: bold; font-family: 'Source Sans Pro', sans-serif;">AR</div>
 				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
 					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer;">Enter Portfolio</button>
 				</div>
@@ -610,10 +611,10 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				// Floating panels
 				const panels = [];
 				for (let i = 0; i < 6; i++) {
-					const width = 2;
-					const height = 2;
+					const width = 3;
+					const height = 3;
 					const geometry = new THREE.PlaneGeometry(width, height);
-					const material = new THREE.MeshLambertMaterial({ color: 0x4A90E2, transparent: true, opacity: 0.9 }); // Unity blue
+					const material = new THREE.MeshLambertMaterial({ color: 0x4A90E2, transparent: true, opacity: 0.9, side: THREE.DoubleSide }); // Unity blue
 					const panel = new THREE.Mesh(geometry, material);
 					panel.position.set((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 2);
 					panel.rotation.set(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1);
