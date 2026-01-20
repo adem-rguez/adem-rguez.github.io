@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V6 BY Adem Rguez
+	V7 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -606,7 +606,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			const width = 1.5 + Math.random();
 			const height = 0.8 + Math.random();
 
-			const geometry = new THREE.BoxGeometry(width, height, 0.1);
+			const geometry = new THREE.BoxGeometry(width, height, 1);
 			const material = new THREE.MeshStandardMaterial({ color: 0x4A90E2 });
 
 			const panel = new THREE.Mesh(geometry, material);
@@ -615,6 +615,10 @@ print 'It took ' + i + ' iterations to sort the deck.';
 				Math.random() * 3 - 1,
 				(Math.random() - 0.5) * 3
 			);
+
+			panel.rotation.y = Math.PI / 6;   // 30°
+			panel.rotation.x = -Math.PI / 12; // slight downward tilt
+
 
 			panels.push(panel);
 			scene.add(panel);
