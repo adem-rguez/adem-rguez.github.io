@@ -71,20 +71,47 @@
 										</ul>
 									</article>
 
-									<article>
+									<article id="saint-gobain">
 										<header>
-											<h2>Arcade Timing Game (Stack-like)</h2>
+											<h2>Interactive Unity Mini-Games for Saint-Gobain</h2>
 										</header>
-										<p><strong>Unity Developer – Mobile Game Project (via intermediary)</strong><br/>
-										A fast-paced arcade game where players place moving blocks with precise timing.</p>
+
+										<p>
+											<strong>Unity Developer – Industrial / Corporate Engagement</strong><br/>
+											Designed and developed <strong>two interactive Unity mini-games</strong> for <strong>Saint-Gobain</strong>, built around a shared
+											<strong>timing and precision gameplay system</strong> and adapted to different spatial constraints.
+										</p>
+
+										<p>
+											The first experience focuses on <strong>vertical stacking</strong>, where users must precisely place moving elements to build
+											a stable tower. The second adapts the same core mechanic to <strong>horizontal movement</strong>, requiring accurate alignment
+											to construct a bridge.
+										</p>
+
+										<p>
+											Beyond gameplay, the project included <strong>production-ready enterprise features</strong>:
+										</p>
+
 										<ul>
-											<li>Procedural block spawning</li>
-											<li>Real-time mesh splitting</li>
-											<li>Physics-based falling pieces</li>
-											<li>Particle effects & visual feedback</li>
-											<li>Scoring and progression system</li>
+											<li>Multi-language <strong>localization system</strong></li>
+											<li><strong>Leaderboard</strong> displaying user scores and rankings</li>
+											<li>Reusable and modular gameplay architecture</li>
+											<li>Real-time scoring and feedback logic</li>
+											<li>Performance-optimized Unity implementation</li>
 										</ul>
-									</article>
+
+										<p>
+											This project demonstrates the ability to <strong>design reusable systems</strong>, adapt mechanics to new constraints,
+											and deliver <strong>polished, client-ready interactive experiences</strong> for large organizations.
+										</p>
+
+										<p><strong>Tools & Technologies:</strong> Unity, C#, modular gameplay systems, localization pipelines, UI systems, leaderboard & scoring logic</p>
+
+										<!-- GIF DEMO -->
+										<div class="image fit" style="margin-top: 1.5rem;">
+											<img src="images/demos/saint-gobain.gif" alt="Saint-Gobain Unity Mini-Games Demo">
+										</div>
+										</article>
 
 									<article>
 										<header>
@@ -504,14 +531,14 @@
 									<h2>Preformatted</h2>
 									<pre><code>i = 0;
 
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
+									while (!deck.isInOrder()) {
+										print 'Iteration ' + i;
+										deck.shuffle();
+										i++;
+									}
 
-print 'It took ' + i + ' iterations to sort the deck.';
-</code></pre>
+									print 'It took ' + i + ' iterations to sort the deck.';
+									</code></pre>
 
 							</section>
 
@@ -588,57 +615,101 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas'), antialias: true });
 			renderer.setSize(window.innerWidth, window.innerHeight);
 
-			// Lighting
+			// Lights
 			scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 			const light = new THREE.DirectionalLight(0xffffff, 0.5);
 			light.position.set(5, 10, 5);
 			scene.add(light);
 
-			// Grid floor
+			// Grid
 			const grid = new THREE.GridHelper(20, 20, 0xcccccc, 0xeeeeee);
 			grid.position.y = -1;
 			scene.add(grid);
 
-			// Floating 3D panels
+
+			// ===========================
+			// GIF-DRIVEN PANELS
+			// ===========================
+
+			// Add your gifs here. Each one maps to a project anchor ID.
+			const gifProjects = [
+			{ gif: "polyt demo.gif", anchor: "vr-trauma" },
+			{ gif: "saint-gobain.gif", anchor: "stack-game" },
+			{ gif: "basic-fr.gif", anchor: "ar-museum" }
+			];
+
 			const panels = [];
+			const loader = new THREE.TextureLoader();
 
-			for (let i = 0; i < 6; i++) {
-			const width = 1.5 + Math.random();
-			const height = 0.8 + Math.random();
+			gifProjects.forEach((item, i) => {
+			const geometry = new THREE.BoxGeometry(2.5, 1.4, 0.15);
 
-			const geometry = new THREE.BoxGeometry(width, height, 1);
-			const material = new THREE.MeshStandardMaterial({ color: 0x4A90E2 });
+			const texture = loader.load("images/demos/" + item.gif);
+			texture.minFilter = THREE.LinearFilter;
+
+			const material = new THREE.MeshStandardMaterial({
+				map: texture,
+				emissive: 0xffffff,
+				emissiveIntensity: 0.2
+			});
 
 			const panel = new THREE.Mesh(geometry, material);
+
+			panel.userData.anchor = item.anchor;
+
 			panel.position.set(
-				(Math.random() - 0.5) * 6,
-				Math.random() * 3 - 1,
-				(Math.random() - 0.5) * 3
+				(i - gifProjects.length / 2) * 3,
+				Math.random() * 2,
+				-i * 1.5
 			);
 
-			panel.rotation.y = Math.PI / 6;   // 30°
-			panel.rotation.x = -Math.PI / 12; // slight downward tilt
+			panel.rotation.y = Math.PI / 6;
+			panel.rotation.x = -Math.PI / 12;
 
-
-			panels.push(panel);
 			scene.add(panel);
-			}
+			panels.push(panel);
+			});
 
-			// Raycaster drag logic
+
+			// ===========================
+			// INTERACTION
+			// ===========================
+
 			const raycaster = new THREE.Raycaster();
 			const mouse = new THREE.Vector2();
 			let selected = null;
 			let dragPlane = new THREE.Plane();
 			let offset = new THREE.Vector3();
+			let hovered = null;
 
-			document.addEventListener('mousedown', e => {
+			// Hover highlight
+			function updateHover(e) {
 			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
 			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
 			raycaster.setFromCamera(mouse, camera);
 			const intersects = raycaster.intersectObjects(panels);
 
-			if (intersects.length > 0) {
+			if (hovered && (!intersects.length || hovered !== intersects[0].object)) {
+				hovered.material.emissiveIntensity = 0.2;
+			}
+
+			if (intersects.length) {
+				hovered = intersects[0].object;
+				hovered.material.emissiveIntensity = 0.6;
+			} else {
+				hovered = null;
+			}
+			}
+
+			document.addEventListener('mousemove', updateHover);
+
+			// Mouse down: drag or click select
+			document.addEventListener('mousedown', e => {
+			raycaster.setFromCamera(mouse, camera);
+			const intersects = raycaster.intersectObjects(panels);
+
+			if (intersects.length) {
 				selected = intersects[0].object;
 
 				dragPlane.setFromNormalAndCoplanarPoint(
@@ -650,6 +721,7 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			}
 			});
 
+			// Mouse move: drag
 			document.addEventListener('mousemove', e => {
 			if (!selected) return;
 
@@ -663,18 +735,27 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			selected.position.copy(point.sub(offset));
 			});
 
+			// Mouse up: release drag + scroll if it was a click
 			document.addEventListener('mouseup', () => {
+			if (selected && selected.userData.anchor) {
+				const target = document.getElementById(selected.userData.anchor);
+				if (target) target.scrollIntoView({ behavior: "smooth" });
+			}
 			selected = null;
 			});
 
-			// Camera parallax
+			// Camera parallax when not dragging
 			document.addEventListener('mousemove', e => {
 			if (selected) return;
 			camera.position.x = (e.clientX / window.innerWidth - 0.5) * 0.5;
 			camera.position.y = 1 + (e.clientY / window.innerHeight - 0.5) * 0.3;
 			});
 
-			// Animate
+
+			// ===========================
+			// ANIMATION LOOP
+			// ===========================
+
 			function animate() {
 			requestAnimationFrame(animate);
 
@@ -687,13 +768,19 @@ print 'It took ' + i + ' iterations to sort the deck.';
 
 			animate();
 
-			// Resize
+
+			// ===========================
+			// RESIZE
+			// ===========================
+
 			window.addEventListener('resize', () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			});
-</script>
+			</script>
+
+			<!-- Language Toggle Script -->
 
 			<script>
 				const translations = {
