@@ -579,136 +579,118 @@ print 'It took ' + i + ' iterations to sort the deck.';
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
-				// Three.js Scene Setup
-				const scene = new THREE.Scene();
-				scene.background = new THREE.Color(0xf5f5f5); // soft off-white
+			const scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xf5f5f5);
 
-				const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-				camera.position.set(0, 0, 5);
-				camera.rotation.set(-0.1, 0, 0); // slight angle
+			const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+			camera.position.set(0, 1, 6);
 
-				const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas') });
-				renderer.setSize(window.innerWidth, window.innerHeight);
+			const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas'), antialias: true });
+			renderer.setSize(window.innerWidth, window.innerHeight);
 
-				// Physics world
-				const world = new CANNON.World();
-				world.gravity.set(0, 0, 0); // no gravity for floating
+			// Lighting
+			scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+			const light = new THREE.DirectionalLight(0xffffff, 0.5);
+			light.position.set(5, 10, 5);
+			scene.add(light);
 
-				// Lighting
-				const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-				scene.add(ambientLight);
+			// Grid floor
+			const grid = new THREE.GridHelper(20, 20, 0xcccccc, 0xeeeeee);
+			grid.position.y = -1;
+			scene.add(grid);
 
-				const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-				directionalLight.position.set(-1, 1, 1);
-				scene.add(directionalLight);
+			// Floating 3D panels
+			const panels = [];
 
-				// Floor grid
-				const gridHelper = new THREE.GridHelper(20, 20, 0xcccccc, 0xcccccc);
-				gridHelper.material.opacity = 0.3;
-				gridHelper.material.transparent = true;
-				scene.add(gridHelper);
+			for (let i = 0; i < 6; i++) {
+			const width = 1.5 + Math.random();
+			const height = 0.8 + Math.random();
 
-				// Floating panels
-				const panels = [];
-				for (let i = 0; i < 6; i++) {
-					const width = 3;
-					const height = 3;
-					const geometry = new THREE.PlaneGeometry(width, height);
-					const material = new THREE.MeshLambertMaterial({ color: 0x4A90E2, transparent: true, opacity: 0.9, side: THREE.DoubleSide }); // Unity blue
-					const panel = new THREE.Mesh(geometry, material);
-					panel.position.set((Math.random() - 0.5) * 10, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 2);
-					panel.rotation.set(Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1, Math.random() * 0.2 - 0.1);
-					scene.add(panel);
+			const geometry = new THREE.BoxGeometry(width, height, 0.1);
+			const material = new THREE.MeshStandardMaterial({ color: 0x4A90E2 });
 
-					// Physics body
-					const shape = new CANNON.Box(new CANNON.Vec3(width/2, height/2, 0.05));
-					const body = new CANNON.Body({ mass: 1 });
-					body.addShape(shape);
-					body.position.copy(panel.position);
-					body.quaternion.copy(panel.quaternion);
-					world.addBody(body);
+			const panel = new THREE.Mesh(geometry, material);
+			panel.position.set(
+				(Math.random() - 0.5) * 6,
+				Math.random() * 3 - 1,
+				(Math.random() - 0.5) * 3
+			);
 
-					panels.push({ mesh: panel, body: body, speed: Math.random() * 0.01 + 0.005 });
-				}
+			panels.push(panel);
+			scene.add(panel);
+			}
 
-				let scrollY = 0;
-				window.addEventListener('scroll', () => {
-					scrollY = window.scrollY;
-				});
+			// Raycaster drag logic
+			const raycaster = new THREE.Raycaster();
+			const mouse = new THREE.Vector2();
+			let selected = null;
+			let dragPlane = new THREE.Plane();
+			let offset = new THREE.Vector3();
 
-				// Animation
-				function animate() {
-					requestAnimationFrame(animate);
-					// Physics step
-					world.step(1/60);
-					// Sync meshes with bodies
-					panels.forEach(panel => {
-						panel.mesh.position.copy(panel.body.position);
-						panel.mesh.quaternion.copy(panel.body.quaternion);
-					});
-					// Slow drift
-					camera.position.x += Math.sin(Date.now() * 0.0005) * 0.001;
-					camera.position.y += Math.cos(Date.now() * 0.0005) * 0.001;
-					// Scroll control
-					camera.position.z = 5 - scrollY * 0.01;
-					renderer.render(scene, camera);
-				}
-				animate();
+			document.addEventListener('mousedown', e => {
+			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
-				// Raycaster for interaction
-				const raycaster = new THREE.Raycaster();
-				const mouse = new THREE.Vector2();
-				let selectedBody = null;
-				let isDragging = false;
+			raycaster.setFromCamera(mouse, camera);
+			const intersects = raycaster.intersectObjects(panels);
 
-				document.addEventListener('mousedown', (event) => {
-					mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-					mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-					camera.updateMatrixWorld();
-					raycaster.setFromCamera(mouse, camera);
-					const intersects = raycaster.intersectObjects(scene.children);
-					if (intersects.length > 0) {
-						selectedBody = panels.find(p => p.mesh === intersects[0].object).body;
-						isDragging = true;
-					}
-				});
+			if (intersects.length > 0) {
+				selected = intersects[0].object;
 
-				document.addEventListener('mousemove', (event) => {
-					if (isDragging && selectedBody) {
-						mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-						mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-						camera.updateMatrixWorld();
-						raycaster.setFromCamera(mouse, camera);
-						const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), -selectedBody.position.z);
-						const point = new THREE.Vector3();
-						raycaster.ray.intersectPlane(plane, point);
-						selectedBody.position.set(point.x, point.y, selectedBody.position.z);
-						selectedBody.velocity.set(0, 0, 0);
-					} else {
-						// Mouse parallax
-						const x = (event.clientX / window.innerWidth) * 2 - 1;
-						const y = -(event.clientY / window.innerHeight) * 2 + 1;
-						camera.position.x = x * 0.1;
-						camera.position.y = y * 0.1;
-					}
-				});
+				dragPlane.setFromNormalAndCoplanarPoint(
+				camera.getWorldDirection(new THREE.Vector3()),
+				selected.position
+				);
 
-				document.addEventListener('mouseup', () => {
-					selectedBody = null;
-					isDragging = false;
-				});
+				offset.copy(intersects[0].point).sub(selected.position);
+			}
+			});
 
-				window.addEventListener('resize', () => {
-					camera.aspect = window.innerWidth / window.innerHeight;
-					camera.updateProjectionMatrix();
-					renderer.setSize(window.innerWidth, window.innerHeight);
-				});
+			document.addEventListener('mousemove', e => {
+			if (!selected) return;
 
-				// Enter button
-				document.getElementById('enter-btn').addEventListener('click', () => {
-					document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
-				});
-			</script>
+			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+			raycaster.setFromCamera(mouse, camera);
+			const point = new THREE.Vector3();
+			raycaster.ray.intersectPlane(dragPlane, point);
+
+			selected.position.copy(point.sub(offset));
+			});
+
+			document.addEventListener('mouseup', () => {
+			selected = null;
+			});
+
+			// Camera parallax
+			document.addEventListener('mousemove', e => {
+			if (selected) return;
+			camera.position.x = (e.clientX / window.innerWidth - 0.5) * 0.5;
+			camera.position.y = 1 + (e.clientY / window.innerHeight - 0.5) * 0.3;
+			});
+
+			// Animate
+			function animate() {
+			requestAnimationFrame(animate);
+
+			panels.forEach((p, i) => {
+				p.position.y += Math.sin(Date.now() * 0.001 + i) * 0.0005;
+			});
+
+			renderer.render(scene, camera);
+			}
+
+			animate();
+
+			// Resize
+			window.addEventListener('resize', () => {
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			});
+</script>
+
 			<script>
 				const translations = {
 					en: {
