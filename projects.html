@@ -609,10 +609,18 @@
 			const scene = new THREE.Scene();
 			scene.background = new THREE.Color(0xf5f5f5);
 
-			const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+			const camera = new THREE.PerspectiveCamera(
+			60,
+			window.innerWidth / window.innerHeight,
+			0.1,
+			100
+			);
 			camera.position.set(0, 1, 6);
 
-			const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threejs-canvas'), antialias: true });
+			const renderer = new THREE.WebGLRenderer({
+			canvas: document.getElementById("threejs-canvas"),
+			antialias: true,
+			});
 			renderer.setSize(window.innerWidth, window.innerHeight);
 
 			// Lights
@@ -626,40 +634,49 @@
 			grid.position.y = -1;
 			scene.add(grid);
 
-
 			// ===========================
-			// GIF-DRIVEN PANELS
+			// VIDEO PANELS (WEBM)
 			// ===========================
 
-			// Add your gifs here. Each one maps to a project anchor ID.
-			const gifProjects = [
-			{ gif: "polyt demo.gif", anchor: "vr-trauma" },
-			{ gif: "saint-gobain.gif", anchor: "stack-game" },
-			{ gif: "basic-fr.gif", anchor: "ar-museum" }
+			const videoProjects = [
+			{ video: "polyt-demo.webm", anchor: "vr-trauma" },
+			{ video: "saint-gobain.webm", anchor: "saint-gobain" },
+			{ video: "basic-fr.webm", anchor: "ar-museum" }
 			];
 
 			const panels = [];
-			const loader = new THREE.TextureLoader();
 
-			gifProjects.forEach((item, i) => {
-			const geometry = new THREE.BoxGeometry(2.5, 1.4, 0.15);
+			videoProjects.forEach((item, i) => {
+			// Create video element
+			const video = document.createElement("video");
+			video.src = "images/demos/" + item.video;
+			video.muted = true;
+			video.loop = true;
+			video.playsInline = true;
+			video.autoplay = true;
+			video.crossOrigin = "anonymous";
+			video.play();
 
-			const texture = loader.load("images/demos/" + item.gif);
-			texture.minFilter = THREE.LinearFilter;
+			// Create video texture
+			const videoTexture = new THREE.VideoTexture(video);
+			videoTexture.minFilter = THREE.LinearFilter;
+			videoTexture.magFilter = THREE.LinearFilter;
+			videoTexture.encoding = THREE.sRGBEncoding;
 
 			const material = new THREE.MeshStandardMaterial({
-				map: texture,
+				map: videoTexture,
 				emissive: 0xffffff,
-				emissiveIntensity: 0.2
+				emissiveIntensity: 0.25
 			});
 
+			const geometry = new THREE.BoxGeometry(2.5, 1.4, 1.15);
 			const panel = new THREE.Mesh(geometry, material);
 
 			panel.userData.anchor = item.anchor;
 
 			panel.position.set(
-				(i - gifProjects.length / 2) * 3,
-				Math.random() * 2,
+				(i - (videoProjects.length - 1) / 2) * 3,
+				Math.random() * 1.5,
 				-i * 1.5
 			);
 
@@ -670,20 +687,20 @@
 			panels.push(panel);
 			});
 
-
 			// ===========================
 			// INTERACTION
 			// ===========================
 
 			const raycaster = new THREE.Raycaster();
 			const mouse = new THREE.Vector2();
+
 			let selected = null;
+			let hovered = null;
 			let dragPlane = new THREE.Plane();
 			let offset = new THREE.Vector3();
-			let hovered = null;
 
 			// Hover highlight
-			function updateHover(e) {
+			document.addEventListener("mousemove", (e) => {
 			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
 			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
@@ -691,7 +708,7 @@
 			const intersects = raycaster.intersectObjects(panels);
 
 			if (hovered && (!intersects.length || hovered !== intersects[0].object)) {
-				hovered.material.emissiveIntensity = 0.2;
+				hovered.material.emissiveIntensity = 0.25;
 			}
 
 			if (intersects.length) {
@@ -700,57 +717,48 @@
 			} else {
 				hovered = null;
 			}
-			}
+			});
 
-			document.addEventListener('mousemove', updateHover);
-
-			// Mouse down: drag or click select
-			document.addEventListener('mousedown', e => {
+			// Mouse down (drag)
+			document.addEventListener("mousedown", () => {
 			raycaster.setFromCamera(mouse, camera);
 			const intersects = raycaster.intersectObjects(panels);
 
 			if (intersects.length) {
 				selected = intersects[0].object;
-
 				dragPlane.setFromNormalAndCoplanarPoint(
 				camera.getWorldDirection(new THREE.Vector3()),
 				selected.position
 				);
-
 				offset.copy(intersects[0].point).sub(selected.position);
 			}
 			});
 
-			// Mouse move: drag
-			document.addEventListener('mousemove', e => {
+			// Drag move
+			document.addEventListener("mousemove", () => {
 			if (!selected) return;
-
-			mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-			mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
 			raycaster.setFromCamera(mouse, camera);
 			const point = new THREE.Vector3();
 			raycaster.ray.intersectPlane(dragPlane, point);
-
 			selected.position.copy(point.sub(offset));
 			});
 
-			// Mouse up: release drag + scroll if it was a click
-			document.addEventListener('mouseup', () => {
-			if (selected && selected.userData.anchor) {
+			// Mouse up → scroll
+			document.addEventListener("mouseup", () => {
+			if (selected?.userData.anchor) {
 				const target = document.getElementById(selected.userData.anchor);
 				if (target) target.scrollIntoView({ behavior: "smooth" });
 			}
 			selected = null;
 			});
 
-			// Camera parallax when not dragging
-			document.addEventListener('mousemove', e => {
+			// Camera parallax
+			document.addEventListener("mousemove", (e) => {
 			if (selected) return;
 			camera.position.x = (e.clientX / window.innerWidth - 0.5) * 0.5;
 			camera.position.y = 1 + (e.clientY / window.innerHeight - 0.5) * 0.3;
 			});
-
 
 			// ===========================
 			// ANIMATION LOOP
@@ -768,17 +776,17 @@
 
 			animate();
 
-
 			// ===========================
 			// RESIZE
 			// ===========================
 
-			window.addEventListener('resize', () => {
+			window.addEventListener("resize", () => {
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			});
 			</script>
+
 
 			<!-- Language Toggle Script -->
 
