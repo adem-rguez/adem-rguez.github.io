@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V14 BY Adem Rguez
+	V16 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -639,7 +639,7 @@
 			// ===========================
 
 			const videoProjects = [
-			{ video: "polyt demo.mp4", anchor: "vr-trauma" },
+			{ video: "polyt demo.webm", anchor: "vr-trauma" },
 			{ video: "saint-gobain.webm", anchor: "saint-gobain" },
 			{ video: "basic-fr.webm", anchor: "ar-museum" }
 			];
@@ -672,7 +672,10 @@
 			//switch box geometry to sphere geometry
 			//const geometry = new THREE.SphereGeometry(2, 32, 32);
 
-			const geometry = new THREE.BoxGeometry(2, 2, 1.5);
+			//switch box geometry to rounded box geometry
+			const geometry = new THREE.BoxGeometry(2, 2, 1.5, 32, 32, 32);
+
+			//const geometry = new THREE.BoxGeometry(2, 2, 1.5);
 			const panel = new THREE.Mesh(geometry, material);
 
 			panel.userData.anchor = item.anchor;
