@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V11 BY Adem Rguez
+	V12 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -670,9 +670,9 @@
 			});
 
 			//switch box geometry to sphere geometry
-			const geometry = new THREE.SphereGeometry(2, 32, 32);
+			//const geometry = new THREE.SphereGeometry(2, 32, 32);
 
-			//const geometry = new THREE.BoxGeometry(2, 2, 1.5);
+			const geometry = new THREE.BoxGeometry(2, 2, 1.5);
 			const panel = new THREE.Mesh(geometry, material);
 
 			panel.userData.anchor = item.anchor;
