@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V24 BY Adem Rguez
+	V27 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -10,10 +10,6 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
 		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; } #nav a { color: #4A90E2 !important; } @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }</style>
 	</head>
@@ -44,8 +40,6 @@
 				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
 					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer; display: flex; align-items: center;">Enter Portfolio <span style="margin-left: 10px; animation: flicker 1s infinite; font-size: 1.5em;">↓</span></button>
 				</div>
-
-				<div id="tooltip" style="position: absolute; display: none; background: rgba(0,0,0,0.8); color: white; padding: 5px; border-radius: 5px; pointer-events: none; z-index: 1000;"></div>
 
 				<!-- Main -->
 					<div id="main">
@@ -391,20 +385,6 @@
 			const stars = new THREE.Points(starGeometry, starMaterial);
 			scene.add(stars);
 
-			// Floating dust particles
-			const dustGeometry = new THREE.BufferGeometry();
-			const dustMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.5 });
-			const dustVertices = [];
-			for (let i = 0; i < 200; i++) {
-				const x = (Math.random() - 0.5) * 40;
-				const y = (Math.random() - 0.5) * 40;
-				const z = (Math.random() - 0.5) * 40;
-				dustVertices.push(x, y, z);
-			}
-			dustGeometry.setAttribute('position', new THREE.Float32BufferAttribute(dustVertices, 3));
-			const dust = new THREE.Points(dustGeometry, dustMaterial);
-			scene.add(dust);
-
 			const camera = new THREE.PerspectiveCamera(
 			60,
 			window.innerWidth / window.innerHeight,
@@ -419,26 +399,11 @@
 			});
 			renderer.setSize(window.innerWidth, window.innerHeight);
 
-			// Post-processing
-			const composer = new THREE.EffectComposer(renderer);
-			composer.addPass(new THREE.RenderPass(scene, camera));
-			const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-			composer.addPass(bloomPass);
-
 			// Lights
 			scene.add(new THREE.AmbientLight(0xffffff, 0.7));
 			const light = new THREE.DirectionalLight(0xffffff, 0.5);
 			light.position.set(5, 10, 5);
 			scene.add(light);
-
-			// Dynamic point lights
-			const pointLight1 = new THREE.PointLight(0x4A90E2, 0.5, 50);
-			pointLight1.position.set(10, 5, 0);
-			scene.add(pointLight1);
-
-			const pointLight2 = new THREE.PointLight(0xF56A6A, 0.5, 50);
-			pointLight2.position.set(-10, -5, 0);
-			scene.add(pointLight2);
 
 
 
@@ -547,8 +512,6 @@
 			let prevMouseX = 0;
 			let prevMouseY = 0;
 			let rotationMode = false;
-			let lastInteraction = Date.now();
-			let idle = false;
 
 			// Hover highlight
 			document.addEventListener("mousemove", (e) => {
@@ -558,8 +521,6 @@
 			raycaster.setFromCamera(mouse, camera);
 			const intersects = raycaster.intersectObjects(panels);
 
-			const tooltip = document.getElementById('tooltip');
-
 			if (hovered && (!intersects.length || hovered !== intersects[0].object)) {
 				hovered.material.emissiveIntensity = 0.25;
 			}
@@ -567,21 +528,13 @@
 			if (intersects.length) {
 				hovered = intersects[0].object;
 				hovered.material.emissiveIntensity = 0.6;
-				tooltip.style.left = (e.clientX + 10) + 'px';
-				tooltip.style.top = (e.clientY + 10) + 'px';
-				tooltip.innerHTML = 'Project: ' + hovered.userData.anchor.replace('-', ' ').toUpperCase();
-				tooltip.style.display = 'block';
 			} else {
-				if (hovered) hovered.material.emissiveIntensity = 0.25;
 				hovered = null;
-				tooltip.style.display = 'none';
 			}
 			});
 
 			// Mouse down (drag)
 			document.addEventListener("mousedown", () => {
-			lastInteraction = Date.now();
-			idle = false;
 			raycaster.setFromCamera(mouse, camera);
 			const intersects = raycaster.intersectObjects(panels);
 
@@ -640,8 +593,6 @@
 
 			// Camera parallax
 			document.addEventListener("mousemove", (e) => {
-			lastInteraction = Date.now();
-			idle = false;
 			if (selected) return;
 			camera.position.x = (e.clientX / window.innerWidth - 0.5) * 0.5;
 			camera.position.y = 1 + (e.clientY / window.innerHeight - 0.5) * 0.3;
@@ -654,41 +605,11 @@
 			function animate() {
 			requestAnimationFrame(animate);
 
-			const time = Date.now() * 0.001;
-
-			if (Date.now() - lastInteraction > 3000) {
-				idle = true;
-			}
-
-			// Camera animation
-			if (idle) {
-				camera.position.x = 8 * Math.cos(time * 0.1);
-				camera.position.z = 8 * Math.sin(time * 0.1);
-				camera.lookAt(0, 0, 0);
-			} else {
-				if (!selected) {
-					const parallaxX = (mouse.x * window.innerWidth / 2 + window.innerWidth / 2) / window.innerWidth - 0.5;
-					const parallaxY = -(mouse.y * window.innerHeight / 2 + window.innerHeight / 2) / window.innerHeight + 0.5;
-					camera.position.x = parallaxX * 0.5;
-					camera.position.y = 1 + parallaxY * 0.3;
-					camera.lookAt(0, 0, 0);
-				}
-			}
-
 			panels.forEach((p, i) => {
-				p.position.y += Math.sin(time + i) * 0.0005;
+				p.position.y += Math.sin(Date.now() * 0.001 + i) * 0.0005;
 			});
 
-			// Animate lights
-			pointLight1.position.x = 10 * Math.cos(time * 0.5);
-			pointLight1.position.z = 10 * Math.sin(time * 0.5);
-			pointLight2.position.x = -10 * Math.cos(time * 0.3);
-			pointLight2.position.z = -10 * Math.sin(time * 0.3);
-
-			// Animate dust
-			dust.rotation.y += 0.001;
-
-			composer.render();
+			renderer.render(scene, camera);
 			}
 
 			animate();
@@ -709,7 +630,6 @@
 			camera.aspect = window.innerWidth / window.innerHeight;
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			composer.setSize(window.innerWidth, window.innerHeight);
 			});
 			</script>
 
