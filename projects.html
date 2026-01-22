@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V16 BY Adem Rguez
+	V17 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -58,17 +58,57 @@
 								<section class="posts">
 									<article id="vr-trauma">
 										<header>
-											<h2>VR Trauma Training Simulator</h2>
+											<h2>Polytraumatised – Multiplayer VR Medical Simulation For Octapharma (via SnackGroup)</h2>
 										</header>
 										<p><strong>Unity Developer – Enterprise Healthcare Client (via intermediary)</strong><br/>
-										A VR serious game designed to train junior doctors in emergency trauma procedures under the supervision of a senior doctor.</p>
+										Polytraumatised is a multiplayer virtual reality serious game developed in Unity for medical training. The goal of the project is to simulate the management of a severe polytrauma patient in a realistic emergency room environment, allowing two players to collaborate as a senior and a junior doctor.</p>
+										<p>Players must perform a full emergency workflow: patient assessment, monitoring of vital signs, biological analysis, imaging exams (FAST ultrasound, chest X-ray, CT angiography), invasive procedures (peripheral and central venous access, arterial line, thoracic drainage, oxygen therapy, intubation), and therapeutic actions such as fluid resuscitation and vasoactive drugs. The scenario evolves dynamically with multiple stages of clinical deterioration, requiring players to interpret data, prioritize actions, and coordinate effectively.</p>
+										<p>The simulation emphasizes:</p>
 										<ul>
-											<li>Scenario-driven emergency logic</li>
-											<li>Interactive medical tools & procedures</li>
-											<li>Senior / junior role system</li>
-											<li>Real-time feedback & validation</li>
-											<li>VR performance optimization</li>
+											<li>Realistic medical logic based on clinical documentation</li>
+											<li>Time pressure and parallel task management</li>
+											<li>Multiplayer synchronization and role-based interaction</li>
+											<li>Diegetic interfaces (monitors, medical tools, nurse menus)</li>
+											<li>Pedagogical design focused on decision-making rather than scripted outcomes</li>
 										</ul>
+										<p>The project was developed as a professional serious game for healthcare training, with a strong focus on technical robustness, UX in VR, and medical accuracy.</p>
+										<h3>Key Features:</h3>
+										<ul>
+											<li>Multiplayer VR experience (senior / junior roles)</li>
+											<li>Real-time patient vital simulation</li>
+											<li>Dynamic clinical deterioration system</li>
+											<li>Medical devices and tools interaction</li>
+											<li>Diagnostic systems (FAST, X-ray, CT)</li>
+											<li>Invasive procedures and monitoring</li>
+											<li>Voice and UI-based guidance systems</li>
+											<li>Scenario-driven pedagogical design</li>
+										</ul>
+										<h3>Technical Skills Demonstrated:</h3>
+										<ul>
+											<li>Unity (C#)</li>
+											<li>VR interaction systems</li>
+											<li>Multiplayer networking</li>
+											<li>State machines and scenario logic</li>
+											<li>UI/UX for VR</li>
+											<li>Simulation systems (vitals, time, events)</li>
+											<li>Medical serious game design</li>
+											<li>Real-time synchronization</li>
+										</ul>
+
+										<!-- VIDEO DEMO -->
+										<div class="image fit" style="margin-top: 1.5rem;">
+											<video src="images/demos/PolyT/polyt demo.webm" alt="Polytraumatised VR Medical Simulation Demo" autoplay muted loop playsinline></video>
+										</div>
+
+										<!-- MULTIPLE IMAGES -->
+										<div class="box alt" style="margin-top: 1.5rem;">
+											<div class="row gtr-50 gtr-uniform">
+												<div class="col-6"><span class="image fit"><img src="images/demos/PolyT/env vr.png" alt="Environment VR"></span></div>
+												<div class="col-6"><span class="image fit"><img src="images/demos/PolyT/quantra vr.jpeg" alt="Quantra VR"></span></div>
+												<div class="col-6"><span class="image fit"><img src="images/demos/PolyT/showcase table vr.jpg" alt="Showcase Table VR"></span></div>
+												<div class="col-6"><span class="image fit"><img src="images/demos/PolyT/polyt demo.gif" alt="Polytraumatised Demo GIF"></span></div>
+											</div>
+										</div>
 									</article>
 
 									<article id="saint-gobain">
@@ -607,7 +647,21 @@
 			<script src="assets/js/main.js"></script>
 			<script>
 			const scene = new THREE.Scene();
-			scene.background = new THREE.Color(0xf5f5f5);
+			scene.background = new THREE.Color(0x000000);
+
+			// Add stars
+			const starGeometry = new THREE.BufferGeometry();
+			const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.5 });
+			const starVertices = [];
+			for (let i = 0; i < 1000; i++) {
+				const x = (Math.random() - 0.5) * 2000;
+				const y = (Math.random() - 0.5) * 2000;
+				const z = (Math.random() - 0.5) * 2000;
+				starVertices.push(x, y, z);
+			}
+			starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+			const stars = new THREE.Points(starGeometry, starMaterial);
+			scene.add(stars);
 
 			const camera = new THREE.PerspectiveCamera(
 			60,
@@ -639,7 +693,7 @@
 			// ===========================
 
 			const videoProjects = [
-			{ video: "polyt demo.webm", anchor: "vr-trauma" },
+			{ video: "PolyT/polyt demo.webm", anchor: "vr-trauma" },
 			{ video: "saint-gobain.webm", anchor: "saint-gobain" },
 			{ video: "basic-fr.webm", anchor: "ar-museum" }
 			];
@@ -704,6 +758,9 @@
 			let hovered = null;
 			let dragPlane = new THREE.Plane();
 			let offset = new THREE.Vector3();
+			let dragged = false;
+			let prevMouseX = 0;
+			let prevMouseY = 0;
 
 			// Hover highlight
 			document.addEventListener("mousemove", (e) => {
@@ -732,6 +789,9 @@
 
 			if (intersects.length) {
 				selected = intersects[0].object;
+				dragged = false;
+				prevMouseX = mouse.x;
+				prevMouseY = mouse.y;
 				dragPlane.setFromNormalAndCoplanarPoint(
 				camera.getWorldDirection(new THREE.Vector3()),
 				selected.position
@@ -744,19 +804,37 @@
 			document.addEventListener("mousemove", () => {
 			if (!selected) return;
 
+			dragged = true;
+			// Rotation
+			const deltaX = mouse.x - prevMouseX;
+			const deltaY = mouse.y - prevMouseY;
+			selected.rotation.y += deltaX * 0.5;
+			selected.rotation.x += deltaY * 0.5;
+			prevMouseX = mouse.x;
+			prevMouseY = mouse.y;
+			// Position
 			raycaster.setFromCamera(mouse, camera);
 			const point = new THREE.Vector3();
 			raycaster.ray.intersectPlane(dragPlane, point);
 			selected.position.copy(point.sub(offset));
 			});
 
-			// Mouse up → scroll
+			// Mouse up → scroll only if not dragged
 			document.addEventListener("mouseup", () => {
-			if (selected?.userData.anchor) {
+			if (selected?.userData.anchor && !dragged) {
 				const target = document.getElementById(selected.userData.anchor);
 				if (target) target.scrollIntoView({ behavior: "smooth" });
 			}
 			selected = null;
+			});
+
+			// Wheel for scaling
+			document.addEventListener('wheel', (e) => {
+			if (selected) {
+				e.preventDefault();
+				const scaleFactor = e.deltaY > 0 ? 0.95 : 1.05;
+				selected.scale.multiplyScalar(scaleFactor);
+			}
 			});
 
 			// Camera parallax
@@ -781,6 +859,14 @@
 			}
 
 			animate();
+
+			// ===========================
+			// ENTER PORTFOLIO BUTTON
+			// ===========================
+
+			document.querySelector('#enter-btn button').addEventListener('click', () => {
+				document.getElementById('main').scrollIntoView({ behavior: 'smooth' });
+			});
 
 			// ===========================
 			// RESIZE
