@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V33 BY Adem Rguez
+	V34 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -437,7 +437,7 @@
 				});
 				const bgCube = new THREE.Mesh(geometry, material);
 				// Random initial position on sphere
-				const radius = 50 + Math.random() * 100;
+				const radius = 20 + Math.random() * 40;
 				const theta = Math.random() * Math.PI;
 				const phi = Math.random() * Math.PI * 2;
 				bgCube.position.set(
@@ -447,7 +447,7 @@
 				);
 				// Store initial angle for orbiting
 				bgCube.userData.orbitAngle = Math.random() * Math.PI * 2;
-				bgCube.userData.orbitSpeed = 0.001 + Math.random() * 0.002;
+				bgCube.userData.orbitSpeed = 0.0001 + Math.random() * 0.0001;
 				bgCube.userData.radius = radius;
 				bgCube.scale.setScalar(0.2 + Math.random() * 0.3);
 				scene.add(bgCube);
