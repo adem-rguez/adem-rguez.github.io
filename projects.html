@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V30 BY Adem Rguez
+	V31 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -426,31 +426,32 @@
 			});
 
 			// Background cubes (distant projects)
-			for (let layer = 1; layer <= 12; layer++) {
-				const distance = layer * 15;
-				const numCubes = Math.max(1, 12 - layer); // more closer, fewer farther
-				for (let i = 0; i < numCubes; i++) {
-					const geometry = new THREE.BoxGeometry(2, 2, 1.5, 64, 64, 64);
-					const randomVideo = videoTextures[Math.floor(Math.random() * videoTextures.length)];
-					const material = new THREE.MeshStandardMaterial({
-						map: randomVideo,
-						emissive: 0xffffff,
-						emissiveIntensity: 0.05 / layer
-					});
-					const bgCube = new THREE.Mesh(geometry, material);
-					bgCube.position.set(
-						(i - (numCubes - 1) / 2) * 4,
-						Math.random() * 3 - 1.5,
-						-distance
-					);
-					bgCube.rotation.set(
-						Math.random() * Math.PI,
-						Math.random() * Math.PI,
-						Math.random() * Math.PI
-					);
-					bgCube.scale.setScalar(0.5 / layer);
-					scene.add(bgCube);
-				}
+			const bgCubes = [];
+			for (let i = 0; i < 50; i++) { // 50 orbiting cubes
+				const geometry = new THREE.BoxGeometry(2, 2, 1.5, 64, 64, 64);
+				const randomVideo = videoTextures[Math.floor(Math.random() * videoTextures.length)];
+				const material = new THREE.MeshStandardMaterial({
+					map: randomVideo,
+					emissive: 0xffffff,
+					emissiveIntensity: 0.02
+				});
+				const bgCube = new THREE.Mesh(geometry, material);
+				// Random initial position on sphere
+				const radius = 50 + Math.random() * 100;
+				const theta = Math.random() * Math.PI;
+				const phi = Math.random() * Math.PI * 2;
+				bgCube.position.set(
+					radius * Math.sin(theta) * Math.cos(phi),
+					radius * Math.sin(theta) * Math.sin(phi),
+					radius * Math.cos(theta)
+				);
+				// Store initial angle for orbiting
+				bgCube.userData.orbitAngle = Math.random() * Math.PI * 2;
+				bgCube.userData.orbitSpeed = 0.001 + Math.random() * 0.002;
+				bgCube.userData.radius = radius;
+				bgCube.scale.setScalar(0.2 + Math.random() * 0.3);
+				scene.add(bgCube);
+				bgCubes.push(bgCube);
 			}
 
 			// ===========================
@@ -561,11 +562,43 @@
 			function animate() {
 			requestAnimationFrame(animate);
 
+			const time = Date.now() * 0.001;
+
+			if (Date.now() - lastInteraction > 3000) {
+				idle = true;
+			}
+
+			// Camera animation
+			if (idle) {
+				camera.position.x = 8 * Math.cos(time * 0.1);
+				camera.position.z = 8 * Math.sin(time * 0.1);
+				camera.lookAt(0, 0, 0);
+			} else {
+				if (!selected) {
+					const parallaxX = (mouse.x * window.innerWidth / 2 + window.innerWidth / 2) / window.innerWidth - 0.5;
+					const parallaxY = -(mouse.y * window.innerHeight / 2 + window.innerHeight / 2) / window.innerHeight + 0.5;
+					camera.position.x = parallaxX * 0.5;
+					camera.position.y = 1 + parallaxY * 0.3;
+					camera.lookAt(0, 0, 0);
+				}
+			}
+
 			panels.forEach((p, i) => {
-				p.position.y += Math.sin(Date.now() * 0.001 + i) * 0.0005;
+				p.position.y += Math.sin(time + i) * 0.0005;
 			});
 
-			renderer.render(scene, camera);
+			// Animate background cubes
+			bgCubes.forEach((cube) => {
+				cube.userData.orbitAngle += cube.userData.orbitSpeed;
+				const r = cube.userData.radius;
+				cube.position.x = r * Math.cos(cube.userData.orbitAngle);
+				cube.position.z = r * Math.sin(cube.userData.orbitAngle);
+				cube.position.y = r * Math.sin(cube.userData.orbitAngle * 0.5);
+				cube.rotation.x += 0.005;
+				cube.rotation.y += 0.005;
+			});
+
+			composer.render();
 			}
 
 			animate();
