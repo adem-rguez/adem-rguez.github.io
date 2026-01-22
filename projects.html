@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V18 BY Adem Rguez
+	V19 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -17,11 +17,6 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper">
-
-				<!-- Header -->
-					<header id="header">
-						<a href="index.html" class="logo">AR</a>
-					</header>
 
 				<!-- Nav -->
 					<nav id="nav">
@@ -71,7 +66,7 @@
 											<li>Diegetic interfaces (monitors, medical tools, nurse menus)</li>
 											<li>Pedagogical design focused on decision-making rather than scripted outcomes</li>
 										</ul>
-										<p>The project was developed as a professional serious game for healthcare training, with a strong focus on technical robustness, UX in VR, and medical accuracy.</p>
+										<p>The project was developed as a professional serious game for healthcare training, with a strong focus on technical robustness, UX in VR, and medical accuracy. Compatible with Pico 4, Meta Quest 3, and enterprise VR headsets.</p>
 										<h3>Key Features:</h3>
 										<ul>
 											<li>Multiplayer VR experience (senior / junior roles)</li>
@@ -651,9 +646,9 @@
 
 			// Add stars
 			const starGeometry = new THREE.BufferGeometry();
-			const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 2 });
+			const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 5 });
 			const starVertices = [];
-			for (let i = 0; i < 500; i++) {
+			for (let i = 0; i < 1000; i++) {
 				const phi = Math.random() * Math.PI * 2;
 				const theta = Math.acos(Math.random() * 2 - 1);
 				const radius = 800 + Math.random() * 200;
@@ -670,7 +665,7 @@
 			60,
 			window.innerWidth / window.innerHeight,
 			0.1,
-			100
+			2000
 			);
 			camera.position.set(0, 1, 6);
 
@@ -793,7 +788,7 @@
 				dragged = false;
 				prevMouseX = mouse.x;
 				prevMouseY = mouse.y;
-				const localPoint = intersects[0].point.clone().sub(selected.position);
+				const localPoint = selected.worldToLocal(intersects[0].point.clone());
 				rotationMode = Math.abs(localPoint.y) > 0.7 && Math.abs(localPoint.z) > 0.7;
 				dragPlane.setFromNormalAndCoplanarPoint(
 				camera.getWorldDirection(new THREE.Vector3()),
