@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V23 BY Adem Rguez
+	V24 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -11,7 +11,7 @@
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
-		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; } #nav a { color: #4A90E2 !important; }</style>
+		<style>#wrapper > .bg { z-index: -3; } #main { margin-top: 150vh; } #nav { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; } #nav a { color: #4A90E2 !important; } @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }</style>
 	</head>
 	<body class="is-preload">
 
@@ -38,7 +38,7 @@
 				<div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; color: white; font-size: 2rem; font-weight: bold; font-family: 'Source Sans Pro', sans-serif;">AR</div>
 				</a>
 				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
-					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer;">Enter Portfolio</button>
+					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer; display: flex; align-items: center;">Enter Portfolio <span style="margin-left: 10px; animation: flicker 1s infinite;">↓</span></button>
 				</div>
 
 				<!-- Main -->
@@ -418,6 +418,7 @@
 			];
 
 			const panels = [];
+			const videoTextures = [];
 
 			videoProjects.forEach((item, i) => {
 			// Create video element
@@ -435,6 +436,8 @@
 			videoTexture.minFilter = THREE.LinearFilter;
 			videoTexture.magFilter = THREE.LinearFilter;
 			videoTexture.encoding = THREE.sRGBEncoding;
+
+			videoTextures.push(videoTexture);
 
 			const material = new THREE.MeshStandardMaterial({
 				map: videoTexture,
@@ -472,9 +475,10 @@
 				const numCubes = Math.max(1, 12 - layer); // more closer, fewer farther
 				for (let i = 0; i < numCubes; i++) {
 					const geometry = new THREE.BoxGeometry(2, 2, 1.5, 32, 32, 32);
+					const randomVideo = videoTextures[Math.floor(Math.random() * videoTextures.length)];
 					const material = new THREE.MeshStandardMaterial({
-						color: 0xffffff,
-						emissive: 0x222222,
+						map: randomVideo,
+						emissive: 0xffffff,
 						emissiveIntensity: 0.05 / layer
 					});
 					const bgCube = new THREE.Mesh(geometry, material);
