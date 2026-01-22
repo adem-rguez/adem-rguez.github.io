@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V38 BY Adem Rguez
+	V42 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -40,6 +40,10 @@
 				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
 					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer; display: flex; align-items: center;">Enter Portfolio <span style="margin-left: 10px; animation: flicker 1s infinite; font-size: 1.5em;">↓</span></button>
 				</div>
+
+				<div id="tooltip" style="position: absolute; display: none; background: rgba(0,0,0,0.8); color: white; padding: 5px; border-radius: 5px; pointer-events: none; z-index: 1000;"></div>
+
+				<div id="hint-ui" style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; font-family: 'Source Sans Pro', sans-serif; z-index: 5;">🖱 Drag cubes · 🔄 Rotate edges · Click to open project</div>
 
 				<!-- Main -->
 					<div id="main">
@@ -515,8 +519,8 @@
 			const deltaX = mouse.x - prevMouseX;
 			const deltaY = mouse.y - prevMouseY;
 			if (rotationMode) {
-				selected.rotation.y += deltaX * 0.5;
-				selected.rotation.x -= deltaY * 0.5;
+				selected.rotation.y += deltaX * 2;
+				selected.rotation.x -= deltaY * 2;
 			} else {
 				raycaster.setFromCamera(mouse, camera);
 				const point = new THREE.Vector3();
