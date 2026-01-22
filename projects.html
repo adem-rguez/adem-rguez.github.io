@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V36 BY Adem Rguez
+	V37 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -419,31 +419,36 @@
 
 			// Background cubes (comet belt)
 			const bgCubes = [];
-			for (let i = 0; i < 30; i++) { // 30 orbiting cubes
-				const geometry = new THREE.BoxGeometry(2, 2, 1.5, 64, 64, 64);
-				const randomVideo = videoTextures[Math.floor(Math.random() * videoTextures.length)];
-				const material = new THREE.MeshStandardMaterial({
-					map: randomVideo,
-					emissive: 0xffffff,
-					emissiveIntensity: 0.1
-				});
-				const bgCube = new THREE.Mesh(geometry, material);
-				// Random initial position in belt around center
-				const radius = 8 + Math.random() * 12;
-				const angle = Math.random() * Math.PI * 2;
-				const height = (Math.random() - 0.5) * 10;
-				bgCube.position.set(
-					radius * Math.cos(angle),
-					height,
-					radius * Math.sin(angle)
-				);
-				// Store initial angle for orbiting
-				bgCube.userData.orbitAngle = angle;
-				bgCube.userData.orbitSpeed = 0.00005 + Math.random() * 0.00005;
-				bgCube.userData.radius = radius;
-				bgCube.scale.setScalar(0.15 + Math.random() * 0.1);
-				scene.add(bgCube);
-				bgCubes.push(bgCube);
+			for (let layer = 0; layer < 5; layer++) {
+				const baseRadius = 5 + layer * 6;
+				const numCubes = 20;
+				for (let i = 0; i < numCubes; i++) {
+					const geometry = new THREE.BoxGeometry(2, 2, 1.5, 64, 64, 64);
+					const randomVideo = videoTextures[Math.floor(Math.random() * videoTextures.length)];
+					const material = new THREE.MeshStandardMaterial({
+						map: randomVideo,
+						emissive: 0xffffff,
+						emissiveIntensity: 0.08 / (layer + 1)
+					});
+					const bgCube = new THREE.Mesh(geometry, material);
+					// Random initial position in belt around center
+					const radius = baseRadius + Math.random() * 4;
+					const angle = Math.random() * Math.PI * 2;
+					const height = (Math.random() - 0.5) * (15 + layer * 10); // increasing vertical scatter
+					bgCube.position.set(
+						radius * Math.cos(angle),
+						height,
+						radius * Math.sin(angle)
+					);
+					// Store initial angle for orbiting
+					bgCube.userData.orbitAngle = angle;
+					bgCube.userData.orbitSpeed = 0.00003 + Math.random() * 0.00002;
+					bgCube.userData.radius = radius;
+					bgCube.userData.baseHeight = height;
+					bgCube.scale.setScalar(0.1 + Math.random() * 0.1);
+					scene.add(bgCube);
+					bgCubes.push(bgCube);
+				}
 			}
 
 			// ===========================
