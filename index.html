@@ -10,11 +10,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in">
+
+				<!-- Starfield Background -->
+				<canvas id="starfield-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;"></canvas>
 
 				<!-- Intro -->
 					<div id="intro">
@@ -118,7 +122,7 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 
 <section id="testimonials">
 <header>
-<h2>Testimonials</h2>
+<h2 data-lang="testimonials-h2">Testimonials</h2>
 </header>
 <div class="testimonials">
 <article>
@@ -242,6 +246,8 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 						"home": "Accueil",
 						"about": "À Propos",
 						"projects": "Projets",
+						"header-h1": "Adem Rguez",
+						"header-p": "Développeur Unity – VR • Jeux • Simulation Interactive<br />Je crée des expériences interactives de haute qualité, des jeux casual aux simulations de formation VR en entreprise.",
 						"recent-project": "Projet Récent",
 						"learn-more": "En Savoir Plus",
 						"about-title": "À Propos",
@@ -259,6 +265,8 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 						"education-title": "Éducation",
 						"education-text": "Licence en Informatique<br />Institut Supérieur des Sciences Appliquées et de Technologie de Sousse, Tunisie<br />Septembre 2018 - Juillet 2021",
 						"certificates": "Certificats:",
+						"vr-desc": "Un jeu sérieux VR conçu pour former les jeunes médecins aux procédures d'urgence en traumatologie sous la supervision d'un médecin senior.",
+						"testimonials-h2": "Témoignages",
 						"name": "Nom",
 						"email": "Email",
 						"message": "Message",
@@ -292,4 +300,5 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 			</script>
 
 	</body>
+	<script src="assets/js/starfield.js"></script>
 </html>

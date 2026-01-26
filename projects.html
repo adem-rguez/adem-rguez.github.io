@@ -38,12 +38,11 @@
 				<div style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10; color: white; font-size: 2rem; font-weight: bold; font-family: 'Source Sans Pro', sans-serif;">AR</div>
 				</a>
 				<div id="enter-btn" style="position: fixed; bottom: 20px; right: 20px; z-index: 10;">
-					<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer; display: flex; align-items: center;">Enter Portfolio <span style="margin-left: 10px; animation: flicker 1s infinite; font-size: 1.5em;">↓</span></button>
-				</div>
+				<button style="padding: 10px 20px; background: rgba(255,255,255,0.8); border: none; cursor: pointer; display: flex; align-items: center;" data-lang="enter-portfolio">Enter Portfolio <span style="margin-left: 10px; animation: flicker 1s infinite; font-size: 1.5em;">↓</span></button>
 
 				<div id="tooltip" style="position: absolute; display: none; background: rgba(0,0,0,0.8); color: white; padding: 5px; border-radius: 5px; pointer-events: none; z-index: 1000;"></div>
 
-				<div id="hint-ui" style="position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; font-family: 'Source Sans Pro', sans-serif; z-index: 1;">🖱 Drag cubes · 🔄 Rotate edges · Click to open project</div>
+				<div id="hint-ui" style="position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-size: 12px; font-family: 'Source Sans Pro', sans-serif; z-index: 1;" data-lang="hint-ui">🖱 Drag cubes · 🔄 Rotate edges · Click to open project</div>
 
 				<!-- Main -->
 					<div id="main">
@@ -630,19 +629,26 @@
 						"home": "Home",
 						"about": "About",
 						"projects": "Projects",
-						"my-projects": "My Projects"
-					},
-					fr: {
-						"home": "Accueil",
-						"about": "À Propos",
-						"projects": "Projets",
-						"my-projects": "Mes Projets",
-						"projects-subtitle": "Une vitrine de mon travail dans le développement Unity, des jeux aux simulations.",
-						"name": "Nom",
-						"email": "Email",
-						"message": "Message",
-						"send-message": "Envoyer le Message",
-						"location": "Localisation",
+					"my-projects": "My Projects",
+					"projects-subtitle": "A showcase of my work in Unity development, from games to simulations.",
+					"enter-portfolio": "Enter Portfolio",
+					"hint-ui": "🖱 Drag cubes · 🔄 Rotate edges · Click to open project",
+					"name": "Name",
+					"email": "Email",
+					"message": "Message",
+					"send-message": "Send Message",
+					"location": "Location",
+					"phone": "Phone",
+					"social": "Social"
+				},
+				fr: {
+					"home": "Accueil",
+					"about": "À Propos",
+					"projects": "Projets",
+					"my-projects": "Mes Projets",
+					"projects-subtitle": "Une vitrine de mon travail dans le développement Unity, des jeux aux simulations.",
+					"enter-portfolio": "Entrer au Portfolio",
+					"hint-ui": "🖱 Drag cubes · 🔄 Rotate edges · Click to open project",
 						"phone": "Téléphone",
 						"social": "Réseaux Sociaux"
 					}

@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+	v43 by adem rguez - adem-rguez.com
 -->
 <html>
 	<head>
@@ -11,11 +9,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 	</head>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
 			<div id="wrapper">
+
+				<!-- Starfield Background -->
+				<canvas id="starfield-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2;"></canvas>
 
 				<!-- Header -->
 					<header id="header">
@@ -44,7 +46,7 @@
 								<header class="major">
 									<h1 data-lang="about-title">About<br />
 									Me</h1>
-									<p>Passionate C# / Unity Developer seeking challenging opportunities in game or software development.</p>
+								<p data-lang="about-subtitle">Passionate C# / Unity Developer seeking challenging opportunities in game or software development.</p>
 								</header>
 								<div class="image main">
 									<video width="100%" controls style="border-radius: 8px;">
@@ -52,8 +54,19 @@
 										Your browser does not support the video tag.
 									</video>
 								</div>
-								<p data-lang="about-text">Passionate C# / Unity Developer seeking challenging opportunities in game or software development to leverage a solid foundation in game and application development, enhanced by skills in problem-solving, fast learning, and teamwork. With a proficient grasp of technologies like Unity, C# and backend development, I excel in creating simulations and enhancing workflow efficiencies. Successfully shipped 21 3D applications on the Google Play Store, demonstrating a drive for achieving impactful results in collaborative settings, aiming to contribute to forward-thinking software solutions in a dynamic, innovative environment.</p>
-								<p data-lang="about-extra">I have experience in developing editor tools to enhance and expedite workflows, streamlining the development process and improving team productivity. I assess the viability of software prototypes, provide crucial feedback that informs project directions, and rectify coding errors to ensure optimal functionality, significantly reducing system downtimes.</p>
+								<p data-lang="about-intro">Unity / C# Developer specialized in interactive 3D, XR and real-time applications.</p>
+								<p data-lang="about-text">I design and build high-quality interactive experiences using Unity, ranging from video games and serious games to VR/AR simulations and real-time 3D systems.</p>
+								<p data-lang="about-experience">Over the past years, I've worked with both large organizations and innovative studios, including clients such as Saint-Gobain, Octapharma and Emissive, delivering production-ready applications used in professional and commercial contexts.</p>
+								<p data-lang="about-approach">Beyond development, I am able to handle projects end-to-end: from technical design and prototyping to production, optimization and deployment. I often act as a technical lead / project coordinator, collaborating with designers, 3D artists, animators and other developers to ensure smooth execution and high-quality results.</p>
+								<p data-lang="about-expertise-intro">My expertise covers:</p>
+								<ul>
+									<li data-lang="expertise-realtime">Real-time 3D development with Unity (C#)</li>
+									<li data-lang="expertise-multiplayer">Multiplayer &amp; online systems</li>
+									<li data-lang="expertise-xr">VR / AR (including WebGL and mobile XR)</li>
+									<li data-lang="expertise-tooling">Tooling &amp; editor extensions</li>
+									<li data-lang="expertise-performance">Performance optimization and scalable architectures</li>
+								</ul>
+								<p data-lang="about-closing">I focus on building robust, maintainable systems and turning complex ideas into reliable interactive products.</p>
 								<h2 data-lang="languages-title">Languages</h2>
 								<ul>
 									<li data-lang="arabic"><strong>Arabic:</strong> Fluent</li>
@@ -133,19 +146,50 @@
 						"home": "Home",
 						"about": "About",
 						"projects": "Projects",
+						"about-title": "About Me",
+						"about-subtitle": "Passionate C# / Unity Developer seeking challenging opportunities in game or software development.",
+						"about-intro": "Unity / C# Developer specialized in interactive 3D, XR and real-time applications.",
+						"about-text": "I design and build high-quality interactive experiences using Unity, ranging from video games and serious games to VR/AR simulations and real-time 3D systems.",
+						"about-experience": "Over the past years, I've worked with both large organizations and innovative studios, including clients such as Saint-Gobain, Octapharma and Emissive, delivering production-ready applications used in professional and commercial contexts.",
+						"about-approach": "Beyond development, I am able to handle projects end-to-end: from technical design and prototyping to production, optimization and deployment. I often act as a technical lead / project coordinator, collaborating with designers, 3D artists, animators and other developers to ensure smooth execution and high-quality results.",
+						"about-expertise-intro": "My expertise covers:",
+						"expertise-realtime": "Real-time 3D development with Unity (C#)",
+						"expertise-multiplayer": "Multiplayer & online systems",
+						"expertise-xr": "VR / AR (including WebGL and mobile XR)",
+						"expertise-tooling": "Tooling & editor extensions",
+						"expertise-performance": "Performance optimization and scalable architectures",
+						"about-closing": "I focus on building robust, maintainable systems and turning complex ideas into reliable interactive products.",
 						"languages-title": "Languages",
 						"arabic": "Arabic: Fluent",
 						"english": "English: Fluent",
 						"french": "French: Fluent",
 						"japanese": "Japanese: Basic",
-						"german": "German: Basic"
+						"german": "German: Basic",
+						"name": "Name",
+						"email": "Email",
+						"message": "Message",
+						"send-message": "Send Message",
+						"location": "Location",
+						"phone": "Phone",
+						"social": "Social"
 					},
 					fr: {
 						"home": "Accueil",
 						"about": "À Propos",
 						"projects": "Projets",
 						"about-title": "À Propos<br />De Moi",
-						"about-extra": "J'ai de l'expérience dans le développement d'outils d'éditeur pour améliorer et accélérer les workflows, rationalisant le processus de développement et améliorant la productivité de l'équipe.",
+						"about-subtitle": "Développeur C# / Unity passionné cherchant des opportunités stimulantes dans le développement de jeux ou de logiciels.",
+						"about-intro": "Développeur Unity / C# spécialisé en 3D temps réel, XR et applications interactives.",
+						"about-text": "Je conçois et développe des expériences interactives de haute qualité avec Unity, allant du jeu vidéo aux serious games, en passant par la réalité virtuelle, la réalité augmentée et les systèmes 3D temps réel.",
+						"about-experience": "J'ai travaillé avec des clients grands comptes et des studios innovants, notamment Saint-Gobain, Octapharma ou Emissive, sur des projets destinés à des usages professionnels et commerciaux.",
+						"about-approach": "Au-delà du développement pur, je suis capable de prendre en charge un projet dans sa globalité : conception technique, prototypage, production, optimisation et déploiement. J'interviens régulièrement en tant que référent technique / chef de projet, en collaboration avec des designers, artistes 3D, animateurs et autres développeurs.",
+						"about-expertise-intro": "Mes domaines d'expertise incluent :",
+						"expertise-realtime": "Développement 3D temps réel avec Unity (C#)",
+						"expertise-multiplayer": "Systèmes multijoueurs et online",
+						"expertise-xr": "VR / AR (mobile, WebGL, XR)",
+						"expertise-tooling": "Outils et extensions d'éditeur",
+						"expertise-performance": "Optimisation de performances et architectures scalables",
+						"about-closing": "Mon objectif est de créer des systèmes robustes, maintenables et performants, et de transformer des concepts complexes en produits interactifs concrets.",
 						"languages-title": "Langues",
 						"arabic": "Arabe: Courant",
 						"english": "Anglais: Courant",
@@ -161,7 +205,6 @@
 						"social": "Réseaux Sociaux"
 					}
 				};
-
 				let currentLang = localStorage.getItem('lang') || 'en';
 				document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
 				updateLanguage();
@@ -184,4 +227,5 @@
 			</script>
 
 	</body>
+	<script src="assets/js/starfield.js"></script>
 </html>
