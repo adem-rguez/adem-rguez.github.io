@@ -22,8 +22,9 @@ function initStarfield() {
 		
 		// Store flicker data
 		flickerData.push({
-			speed: 0.5 + Math.random() * 1.5,
-			offset: Math.random() * Math.PI * 2
+			speed: 0.3 + Math.random() * 2.5, // More varied speeds (0.3 to 2.8)
+			offset: Math.random() * Math.PI * 2,
+			phase: Math.random() // Additional randomness
 		});
 	}
 	
@@ -70,14 +71,15 @@ function initStarfield() {
 	function animate() {
 		requestAnimationFrame(animate);
 		
-		time += 0.01;
+		time += 0.01; // Slower time increment for better control
 		
 		// Update size (flicker effect) for each star
 		const sizeArray = starGeometry.attributes.size.array;
 		for (let i = 0; i < 1000; i++) {
 			const flicker = flickerData[i];
-			const flickerValue = Math.sin(time * flicker.speed + flicker.offset) * 0.5 + 0.5;
-			sizeArray[i] = 2 + flickerValue * 4; // Vary between 2 and 6
+			// Use different calculation for each star to ensure independent flickering
+			const flickerValue = Math.sin(time * flicker.speed + flicker.offset + flicker.phase * Math.PI) * 0.5 + 0.5;
+			sizeArray[i] = 1 + flickerValue * 8; // Vary between 1 and 9
 		}
 		starGeometry.attributes.size.needsUpdate = true;
 		
