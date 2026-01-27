@@ -140,7 +140,14 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-			<script>
+		<script src="assets/js/starfield.js"></script>
+		<script>
+			// Initialize starfield on page load
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initStarfield);
+			} else {
+				initStarfield();
+			}
 				const translations = {
 					en: {
 						"home": "Home",

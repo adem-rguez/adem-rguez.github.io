@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V41 BY Adem Rguez
+	V50 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -61,8 +61,8 @@ I build high-quality interactive experiences, from casual games to enterprise VR
 							<article class="post featured">
 								<header class="major">
 									<span class="date" data-lang="recent-project">Recent Project</span>
-									<h2><a href="#">Polytraumatisé – Multiplayer VR Medical Simulation</a></h2>
-									<p data-lang="vr-desc">A multiplayer VR serious game for medical training, simulating severe polytrauma patient management in a realistic emergency room.</p>
+									<h2 data-lang="home-polyt-title"><a href="#">Polytraumatisé – Multiplayer VR Medical Simulation</a></h2>
+									<p data-lang="home-polyt-desc">A multiplayer VR serious game for medical training, simulating severe polytrauma patient management in a realistic emergency room.</p>
 								</header>
 								<video src="images/demos/PolyT/polyt demo.webm" alt="Polytraumatisé VR Medical Simulation" autoplay muted loop playsinline style="width: 100%; height: auto;"></video>
 								<ul class="actions special">
@@ -72,33 +72,33 @@ I build high-quality interactive experiences, from casual games to enterprise VR
 
 						
 <section class="posts">
-<article>
+<article id="home-polyt">
 <header>
-<h2>Polytraumatisé – Multiplayer VR Medical Simulation</h2>
+<h2 data-lang="home-project-1-title">Polytraumatisé – Multiplayer VR Medical Simulation</h2>
 </header>
-<p><strong>Healthcare Client (via intermediary)</strong><br/>
-A VR serious game designed to train junior doctors in emergency trauma procedures under the supervision of a senior doctor.</p>
+<p><strong data-lang="home-project-1-role">Healthcare Client (via intermediary)</strong><br/>
+<span data-lang="home-project-1-desc">A VR serious game designed to train junior doctors in emergency trauma procedures under the supervision of a senior doctor.</span></p>
 <ul>
-<li>Scenario-driven emergency logic</li>
-<li>Interactive medical tools & procedures</li>
-<li>Senior / junior role system</li>
-<li>Real-time feedback & validation</li>
-<li>VR performance optimization</li>
+<li data-lang="home-project-1-feat-1">Scenario-driven emergency logic</li>
+<li data-lang="home-project-1-feat-2">Interactive medical tools & procedures</li>
+<li data-lang="home-project-1-feat-3">Senior / junior role system</li>
+<li data-lang="home-project-1-feat-4">Real-time feedback & validation</li>
+<li data-lang="home-project-1-feat-5">VR performance optimization</li>
 </ul>
 </article>
 
-<article>
+<article id="home-sg">
 <header>
-<h2>Interactive Unity Mini-Games for Saint-Gobain</h2>
+<h2 data-lang="home-project-2-title">Interactive Unity Mini-Games for Saint-Gobain</h2>
 </header>
-<p><strong>Industrial Company via intermediary</strong><br/>
-Designed and developed two interactive Unity mini-games for Saint-Gobain, built around a shared timing and precision gameplay system.</p>
+<p><strong data-lang="home-project-2-role">Industrial Company via intermediary</strong><br/>
+<span data-lang="home-project-2-desc">Designed and developed two interactive Unity mini-games for Saint-Gobain, built around a shared timing and precision gameplay system.</span></p>
 <ul>
-<li>Procedural block spawning</li>
-<li>Real-time mesh splitting</li>
-<li>Physics-based falling pieces</li>
-<li>Particle effects & visual feedback</li>
-<li>Scoring and progression system</li>
+<li data-lang="home-project-2-feat-1">Procedural block spawning</li>
+<li data-lang="home-project-2-feat-2">Real-time mesh splitting</li>
+<li data-lang="home-project-2-feat-3">Physics-based falling pieces</li>
+<li data-lang="home-project-2-feat-4">Particle effects & visual feedback</li>
+<li data-lang="home-project-2-feat-5">Scoring and progression system</li>
 </ul>
 </article>
 
@@ -125,16 +125,16 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 <h2 data-lang="testimonials-h2">Testimonials</h2>
 </header>
 <div class="testimonials">
-<article>
+<article id="testimonial-1">
 <blockquote>
-<p>"Adem à développer sur Unity une expérience en Réalité Augmentée en WebGL. Bien que la mission ne fut pas facile à cause des restrictions de la plateforme, Adem a su remonter les défis et livrer le projet dans les temps en remplissant toutes les demandes."</p>
-<footer>— Benjamin Metayer, Snack Interactive, 18/09/2024</footer>
+<p data-lang="testimonial-1-text">"Adem à développer sur Unity une expérience en Réalité Augmentée en WebGL. Bien que la mission ne fut pas facile à cause des restrictions de la plateforme, Adem a su remonter les défis et livrer le projet dans les temps en remplissant toutes les demandes."</p>
+<footer data-lang="testimonial-1-author">— Benjamin Metayer, Snack Interactive, 18/09/2024</footer>
 </blockquote>
 </article>
-<article>
+<article id="testimonial-2">
 <blockquote>
-<p>"Adem a travaillé pendant près de 2 ans au cours desquels il a quasiment construit seul notre App Basic-Français sous la supervision de notre directeur R&D. Adem mène les tâches qui lui sont demandées avec u minimum de supervision, il est très autonome mais a appris à prendre en compte les desiderata des utilisateurs en mode 'agile'. Je le recommande sans hésitation."</p>
-<footer>— Jacques-Olivier Amberg, LUDO-VIC, 31/10/2023</footer>
+<p data-lang="testimonial-2-text">"Adem a travaillé pendant près de 2 ans au cours desquels il a quasiment construit seul notre App Basic-Français sous la supervision de notre directeur R&D. Adem mène les tâches qui lui sont demandées avec u minimum de supervision, il est très autonome mais a appris à prendre en compte les desiderata des utilisateurs en mode 'agile'. Je le recommande sans hésitation."</p>
+<footer data-lang="testimonial-2-author">— Jacques-Olivier Amberg, LUDO-VIC, 31/10/2023</footer>
 </blockquote>
 </article>
 </div>
@@ -208,7 +208,14 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-			<script>
+		<script src="assets/js/starfield.js"></script>
+		<script>
+			// Initialize starfield on page load
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initStarfield);
+			} else {
+				initStarfield();
+			}
 				const translations = {
 					en: {
 						"intro-h1": "Adem<br />Rguez",
@@ -237,7 +244,29 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 						"send-message": "Send Message",
 						"location": "Location",
 						"phone": "Phone",
-						"social": "Social"
+						"social": "Social",
+						"home-polyt-title": "Polytraumatisé – Multiplayer VR Medical Simulation",
+						"home-polyt-desc": "A multiplayer VR serious game for medical training, simulating severe polytrauma patient management in a realistic emergency room.",
+						"home-project-1-title": "Polytraumatisé – Multiplayer VR Medical Simulation",
+						"home-project-1-role": "Healthcare Client (via intermediary)",
+						"home-project-1-desc": "A VR serious game designed to train junior doctors in emergency trauma procedures under the supervision of a senior doctor.",
+						"home-project-1-feat-1": "Scenario-driven emergency logic",
+						"home-project-1-feat-2": "Interactive medical tools & procedures",
+						"home-project-1-feat-3": "Senior / junior role system",
+						"home-project-1-feat-4": "Real-time feedback & validation",
+						"home-project-1-feat-5": "VR performance optimization",
+						"home-project-2-title": "Interactive Unity Mini-Games for Saint-Gobain",
+						"home-project-2-role": "Industrial Company via intermediary",
+						"home-project-2-desc": "Designed and developed two interactive Unity mini-games for Saint-Gobain, built around a shared timing and precision gameplay system.",
+						"home-project-2-feat-1": "Procedural block spawning",
+						"home-project-2-feat-2": "Real-time mesh splitting",
+						"home-project-2-feat-3": "Physics-based falling pieces",
+						"home-project-2-feat-4": "Particle effects & visual feedback",
+						"home-project-2-feat-5": "Scoring and progression system",
+						"testimonial-1-text": "\"Adem à développer sur Unity une expérience en Réalité Augmentée en WebGL. Bien que la mission ne fut pas facile à cause des restrictions de la plateforme, Adem a su remonter les défis et livrer le projet dans les temps en remplissant toutes les demandes.\"",
+						"testimonial-1-author": "— Benjamin Metayer, Snack Interactive, 18/09/2024",
+						"testimonial-2-text": "\"Adem a travaillé pendant près de 2 ans au cours desquels il a quasiment construit seul notre App Basic-Français sous la supervision de notre directeur R&D. Adem mène les tâches qui lui sont demandées avec u minimum de supervision, il est très autonome mais a appris à prendre en compte les desiderata des utilisateurs en mode 'agile'. Je le recommande sans hésitation.\"",
+						"testimonial-2-author": "— Jacques-Olivier Amberg, LUDO-VIC, 31/10/2023"
 					},
 					fr: {
 						"intro-h1": "Adem<br />Rguez",
@@ -274,6 +303,28 @@ Designed and developed two interactive Unity mini-games for Saint-Gobain, built 
 						"location": "Localisation",
 						"phone": "Téléphone",
 						"social": "Réseaux Sociaux",
+						"home-polyt-title": "Polytraumatisé – Simulation VR Médicale Multijoueur",
+						"home-polyt-desc": "Un jeu sérieux VR multijoueur pour la formation médicale, simulant la gestion des patients polytraumatisés graves dans une salle d'urgence réaliste.",
+						"home-project-1-title": "Polytraumatisé – Simulation VR Médicale Multijoueur",
+						"home-project-1-role": "Client Santé (via intermédiaire)",
+						"home-project-1-desc": "Un jeu sérieux VR conçu pour former les jeunes médecins aux procédures d'urgence en traumatologie sous la supervision d'un médecin senior.",
+						"home-project-1-feat-1": "Logique d'urgence basée sur le scénario",
+						"home-project-1-feat-2": "Outils et procédures médicaux interactifs",
+						"home-project-1-feat-3": "Système de rôles senior / junior",
+						"home-project-1-feat-4": "Rétroaction et validation en temps réel",
+						"home-project-1-feat-5": "Optimisation des performances VR",
+						"home-project-2-title": "Jeux Mini-Interactifs Unity pour Saint-Gobain",
+						"home-project-2-role": "Entreprise Industrielle via intermédiaire",
+						"home-project-2-desc": "Conception et développement de deux mini-jeux interactifs Unity pour Saint-Gobain, construits autour d'un système de jeu partagé de timing et de précision.",
+						"home-project-2-feat-1": "Génération procédurale de blocs",
+						"home-project-2-feat-2": "Fractionnement de maille en temps réel",
+						"home-project-2-feat-3": "Pièces tombantes basées sur la physique",
+						"home-project-2-feat-4": "Effets de particules et retour visuel",
+						"home-project-2-feat-5": "Système de notation et de progression",
+						"testimonial-1-text": "\"Adem à développer sur Unity une expérience en Réalité Augmentée en WebGL. Bien que la mission ne fut pas facile à cause des restrictions de la plateforme, Adem a su remonter les défis et livrer le projet dans les temps en remplissant toutes les demandes.\"",
+						"testimonial-1-author": "— Benjamin Metayer, Snack Interactive, 18/09/2024",
+						"testimonial-2-text": "\"Adem a travaillé pendant près de 2 ans au cours desquels il a quasiment construit seul notre App Basic-Français sous la supervision de notre directeur R&D. Adem mène les tâches qui lui sont demandées avec u minimum de supervision, il est très autonome mais a appris à prendre en compte les desiderata des utilisateurs en mode 'agile'. Je le recommande sans hésitation.\"",
+						"testimonial-2-author": "— Jacques-Olivier Amberg, LUDO-VIC, 31/10/2023",
 						"vr-desc": "Un jeu sérieux VR conçu pour former les jeunes médecins aux procédures d'urgence en traumatologie sous la supervision d'un médecin senior."
 					}
 				};
