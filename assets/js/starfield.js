@@ -3,10 +3,24 @@ function initStarfield() {
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(0x000000);
 
-	// Create combined geometry for all stars
-	const starGeometry = new THREE.BufferGeometry();
-	const starVertices = [];
-	const starSizes = [];
+	// Create a canvas texture for glowing stars
+	const canvas = document.createElement('canvas');
+	canvas.width = 128;
+	canvas.height = 128;
+	const ctx = canvas.getContext('2d');
+	
+	// Draw a radial gradient for a glowing star effect
+	const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+	gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+	gradient.addColorStop(0.5, 'rgba(255, 255, 150, 0.8)');
+	gradient.addColorStop(1, 'rgba(255, 150, 100, 0)');
+	ctx.fillStyle = gradient;
+	ctx.fillRect(0, 0, 128, 128);
+	
+	const starTexture = new THREE.CanvasTexture(canvas);
+	
+	// Create stars as sprites (will appear bright with glowing texture)
+	const stars = [];
 	const flickerData = [];
 	
 	for (let i = 0; i < 1000; i++) {
@@ -17,34 +31,30 @@ function initStarfield() {
 		const y = radius * Math.sin(theta) * Math.sin(phi);
 		const z = radius * Math.cos(theta);
 		
-		starVertices.push(x, y, z);
-		starSizes.push(10); // Increased initial size from 5 to 10
+		// Create sprite material with the glowing texture
+		const spriteMaterial = new THREE.SpriteMaterial({
+			map: starTexture,
+			color: 0xffffff,
+			sizeAttenuation: true,
+			opacity: 1.0,
+			transparent: true
+		});
+		
+		const sprite = new THREE.Sprite(spriteMaterial);
+		sprite.position.set(x, y, z);
+		sprite.scale.set(8, 8, 1); // Size of the star sprite
+		scene.add(sprite);
+		stars.push(sprite);
 		
 		// Store flicker data
 		flickerData.push({
-			speed: 0.3 + Math.random() * 2.5, // More varied speeds (0.3 to 2.8)
+			speed: 0.3 + Math.random() * 2.5,
 			offset: Math.random() * Math.PI * 2,
-			phase: Math.random() // Additional randomness
+			phase: Math.random()
 		});
 	}
-	
-	starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-	starGeometry.setAttribute('size', new THREE.Float32BufferAttribute(starSizes, 1));
-	
-	const starMaterial = new THREE.PointsMaterial({
-		color: 0xffffff,
-		size: 10, // Increased from 5 to make stars brighter and more visible
-		sizeAttenuation: true,
-		opacity: 1.0,
-		transparent: true,
-		emissive: 0xffffff, // Make stars glow
-		emissiveIntensity: 0.8
-	});
-	
-	const stars = new THREE.Points(starGeometry, starMaterial);
-	scene.add(stars);
 
-	const canvas = document.getElementById("starfield-canvas");
+	const canvasElement = document.getElementById("starfield-canvas");
 	const camera = new THREE.PerspectiveCamera(
 		60,
 		window.innerWidth / window.innerHeight,
@@ -54,16 +64,16 @@ function initStarfield() {
 	camera.position.set(0, 1, 6);
 
 	const renderer = new THREE.WebGLRenderer({
-		canvas: canvas,
+		canvas: canvasElement,
 		antialias: true,
 		alpha: true
 	});
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor(0x000000, 1);
 
-	// Lights - increased intensity
-	scene.add(new THREE.AmbientLight(0xffffff, 1.0)); // Increased from 0.7 to 1.0
-	const light = new THREE.DirectionalLight(0xffffff, 0.8); // Increased from 0.5 to 0.8
+	// Lights
+	scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+	const light = new THREE.DirectionalLight(0xffffff, 0.5);
 	light.position.set(5, 10, 5);
 	scene.add(light);
 
@@ -73,17 +83,18 @@ function initStarfield() {
 	function animate() {
 		requestAnimationFrame(animate);
 		
-		time += 0.01; // Slower time increment for better control
+		time += 0.01;
 		
-		// Update size (flicker effect) for each star
-		const sizeArray = starGeometry.attributes.size.array;
+		// Update each star's scale (flicker effect)
 		for (let i = 0; i < 1000; i++) {
 			const flicker = flickerData[i];
-			// Use different calculation for each star to ensure independent flickering
 			const flickerValue = Math.sin(time * flicker.speed + flicker.offset + flicker.phase * Math.PI) * 0.5 + 0.5;
-			sizeArray[i] = 3 + flickerValue * 12; // Vary between 3 and 15 (much larger range)
+			const scale = 4 + flickerValue * 12; // Scale from 4 to 16
+			stars[i].scale.set(scale, scale, 1);
+			
+			// Also vary opacity for more dramatic effect
+			stars[i].material.opacity = 0.5 + flickerValue * 0.5; // Opacity from 0.5 to 1.0
 		}
-		starGeometry.attributes.size.needsUpdate = true;
 		
 		renderer.render(scene, camera);
 	}
