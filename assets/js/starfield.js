@@ -3,12 +3,13 @@ function initStarfield() {
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(0x000000);
 
-	// Add stars with individual geometries for flickering
-	const starCount = 1000;
-	const stars = [];
+	// Create combined geometry for all stars
+	const starGeometry = new THREE.BufferGeometry();
+	const starVertices = [];
+	const starSizes = [];
 	const flickerData = [];
 	
-	for (let i = 0; i < starCount; i++) {
+	for (let i = 0; i < 1000; i++) {
 		const phi = Math.random() * Math.PI * 2;
 		const theta = Math.acos(Math.random() * 2 - 1);
 		const radius = 800 + Math.random() * 200;
@@ -16,27 +17,29 @@ function initStarfield() {
 		const y = radius * Math.sin(theta) * Math.sin(phi);
 		const z = radius * Math.cos(theta);
 		
-		// Create individual star geometry
-		const geometry = new THREE.BufferGeometry();
-		geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([x, y, z]), 3));
-		
-		const material = new THREE.PointsMaterial({
-			color: 0xffffff,
-			size: 5,
-			sizeAttenuation: true
-		});
-		
-		const star = new THREE.Points(geometry, material);
-		scene.add(star);
-		stars.push(star);
+		starVertices.push(x, y, z);
+		starSizes.push(5); // Initial size
 		
 		// Store flicker data
 		flickerData.push({
 			speed: 0.5 + Math.random() * 1.5,
-			offset: Math.random() * Math.PI * 2,
-			baseOpacity: 0.6 + Math.random() * 0.4
+			offset: Math.random() * Math.PI * 2
 		});
 	}
+	
+	starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+	starGeometry.setAttribute('size', new THREE.Float32BufferAttribute(starSizes, 1));
+	
+	const starMaterial = new THREE.PointsMaterial({
+		color: 0xffffff,
+		size: 5,
+		sizeAttenuation: true,
+		opacity: 1.0,
+		transparent: true
+	});
+	
+	const stars = new THREE.Points(starGeometry, starMaterial);
+	scene.add(stars);
 
 	const canvas = document.getElementById("starfield-canvas");
 	const camera = new THREE.PerspectiveCamera(
@@ -67,14 +70,16 @@ function initStarfield() {
 	function animate() {
 		requestAnimationFrame(animate);
 		
-		time += 0.016; // ~60fps
+		time += 0.01;
 		
-		// Update flicker for each star
-		for (let i = 0; i < starCount; i++) {
+		// Update size (flicker effect) for each star
+		const sizeArray = starGeometry.attributes.size.array;
+		for (let i = 0; i < 1000; i++) {
 			const flicker = flickerData[i];
 			const flickerValue = Math.sin(time * flicker.speed + flicker.offset) * 0.5 + 0.5;
-			stars[i].material.opacity = 0.3 + flickerValue * 0.7; // Range from 0.3 to 1.0
+			sizeArray[i] = 2 + flickerValue * 4; // Vary between 2 and 6
 		}
+		starGeometry.attributes.size.needsUpdate = true;
 		
 		renderer.render(scene, camera);
 	}
