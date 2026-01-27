@@ -18,7 +18,7 @@ function initStarfield() {
 		const z = radius * Math.cos(theta);
 		
 		starVertices.push(x, y, z);
-		starSizes.push(5); // Initial size
+		starSizes.push(10); // Increased initial size from 5 to 10
 		
 		// Store flicker data
 		flickerData.push({
@@ -33,10 +33,12 @@ function initStarfield() {
 	
 	const starMaterial = new THREE.PointsMaterial({
 		color: 0xffffff,
-		size: 5,
+		size: 10, // Increased from 5 to make stars brighter and more visible
 		sizeAttenuation: true,
 		opacity: 1.0,
-		transparent: true
+		transparent: true,
+		emissive: 0xffffff, // Make stars glow
+		emissiveIntensity: 0.8
 	});
 	
 	const stars = new THREE.Points(starGeometry, starMaterial);
@@ -59,9 +61,9 @@ function initStarfield() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor(0x000000, 1);
 
-	// Lights
-	scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-	const light = new THREE.DirectionalLight(0xffffff, 0.5);
+	// Lights - increased intensity
+	scene.add(new THREE.AmbientLight(0xffffff, 1.0)); // Increased from 0.7 to 1.0
+	const light = new THREE.DirectionalLight(0xffffff, 0.8); // Increased from 0.5 to 0.8
 	light.position.set(5, 10, 5);
 	scene.add(light);
 
@@ -79,7 +81,7 @@ function initStarfield() {
 			const flicker = flickerData[i];
 			// Use different calculation for each star to ensure independent flickering
 			const flickerValue = Math.sin(time * flicker.speed + flicker.offset + flicker.phase * Math.PI) * 0.5 + 0.5;
-			sizeArray[i] = 1 + flickerValue * 8; // Vary between 1 and 9
+			sizeArray[i] = 3 + flickerValue * 12; // Vary between 3 and 15 (much larger range)
 		}
 		starGeometry.attributes.size.needsUpdate = true;
 		
