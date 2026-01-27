@@ -3,70 +3,40 @@ function initStarfield() {
 	const scene = new THREE.Scene();
 	scene.background = new THREE.Color(0x000000);
 
-	// Add stars
-	const starGeometry = new THREE.BufferGeometry();
-	const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 5 });
-	const starVertices = [];
-	const starFlicker = []; // Store flicker data for each star
+	// Add stars with individual geometries for flickering
+	const starCount = 1000;
+	const stars = [];
+	const flickerData = [];
 	
-	for (let i = 0; i < 1000; i++) {
+	for (let i = 0; i < starCount; i++) {
 		const phi = Math.random() * Math.PI * 2;
 		const theta = Math.acos(Math.random() * 2 - 1);
 		const radius = 800 + Math.random() * 200;
 		const x = radius * Math.sin(theta) * Math.cos(phi);
 		const y = radius * Math.sin(theta) * Math.sin(phi);
 		const z = radius * Math.cos(theta);
-		starVertices.push(x, y, z);
 		
-		// Store flicker properties for each star
-		starFlicker.push({
-			intensity: Math.random(),
+		// Create individual star geometry
+		const geometry = new THREE.BufferGeometry();
+		geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([x, y, z]), 3));
+		
+		const material = new THREE.PointsMaterial({
+			color: 0xffffff,
+			size: 5,
+			sizeAttenuation: true
+		});
+		
+		const star = new THREE.Points(geometry, material);
+		scene.add(star);
+		stars.push(star);
+		
+		// Store flicker data
+		flickerData.push({
 			speed: 0.5 + Math.random() * 1.5,
-			offset: Math.random() * Math.PI * 2
+			offset: Math.random() * Math.PI * 2,
+			baseOpacity: 0.6 + Math.random() * 0.4
 		});
 	}
-	
-	starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-	
-	// Add opacity attribute for flickering
-	const opacities = new Float32Array(1000);
-	for (let i = 0; i < 1000; i++) {
-		opacities[i] = 1;
-	}
-	starGeometry.setAttribute('opacity', new THREE.BufferAttribute(opacities, 1));
-	
-	// Use a custom material that supports opacity
-	const starMaterial2 = new THREE.ShaderMaterial({
-		uniforms: {
-			time: { value: 0 },
-			texture: { value: new THREE.CanvasTexture(createStarTexture()) }
-		},
-		vertexShader: `
-			attribute float opacity;
-			varying float vOpacity;
-			
-			void main() {
-				vOpacity = opacity;
-				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-				gl_PointSize = 5.0;
-			}
-		`,
-		fragmentShader: `
-			uniform sampler2D texture;
-			varying float vOpacity;
-			
-			void main() {
-				vec2 uv = gl_PointCoord;
-				vec4 tex = texture2D(texture, uv);
-				gl_FragColor = vec4(1.0, 1.0, 1.0, tex.a * vOpacity);
-			}
-		`,
-		transparent: true,
-		depthWrite: false
-	});
-	
-	const stars = new THREE.Points(starGeometry, starMaterial2);
-	scene.add(stars);
 
 	const canvas = document.getElementById("starfield-canvas");
 	const camera = new THREE.PerspectiveCamera(
@@ -99,17 +69,12 @@ function initStarfield() {
 		
 		time += 0.016; // ~60fps
 		
-		// Update opacity for flickering effect
-		const opacityArray = starGeometry.attributes.opacity.array;
-		for (let i = 0; i < 1000; i++) {
-			const flicker = starFlicker[i];
-			const flicker_value = Math.sin(time * flicker.speed + flicker.offset) * 0.5 + 0.5;
-			opacityArray[i] = 0.4 + flicker_value * 0.6; // Range from 0.4 to 1.0
+		// Update flicker for each star
+		for (let i = 0; i < starCount; i++) {
+			const flicker = flickerData[i];
+			const flickerValue = Math.sin(time * flicker.speed + flicker.offset) * 0.5 + 0.5;
+			stars[i].material.opacity = 0.3 + flickerValue * 0.7; // Range from 0.3 to 1.0
 		}
-		starGeometry.attributes.opacity.needsUpdate = true;
-		
-		// Update shader uniform
-		starMaterial2.uniforms.time.value = time;
 		
 		renderer.render(scene, camera);
 	}
@@ -121,25 +86,6 @@ function initStarfield() {
 		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	});
-}
-
-// Helper function to create a simple star texture
-function createStarTexture() {
-	const canvas = document.createElement('canvas');
-	canvas.width = 32;
-	canvas.height = 32;
-	const ctx = canvas.getContext('2d');
-	
-	// Draw a circular gradient for the star
-	const gradient = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
-	gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-	gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.5)');
-	gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-	
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, 32, 32);
-	
-	return canvas;
 }
 
 // Initialize when DOM is ready
