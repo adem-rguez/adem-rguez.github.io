@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V42 BY Adem Rguez
+	V45 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -618,17 +618,16 @@
 			camera.updateProjectionMatrix();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			});
-			</script>
 
+			// ===========================
+			// LANGUAGE TRANSLATIONS
+			// ===========================
 
-			<!-- Language Toggle Script -->
-
-			<script>
-				const translations = {
-					en: {
-						"home": "Home",
-						"about": "About",
-						"projects": "Projects",
+			const translations = {
+				en: {
+					"home": "Home",
+					"about": "About",
+					"projects": "Projects",
 					"my-projects": "My Projects",
 					"projects-subtitle": "A showcase of my work in Unity development, from games to simulations.",
 					"enter-portfolio": "Enter Portfolio",
@@ -649,31 +648,36 @@
 					"projects-subtitle": "Une vitrine de mon travail dans le développement Unity, des jeux aux simulations.",
 					"enter-portfolio": "Entrer au Portfolio",
 					"hint-ui": "🖱 Drag cubes · 🔄 Rotate edges · Click to open project",
-						"phone": "Téléphone",
-						"social": "Réseaux Sociaux"
-					}
-				};
+					"name": "Nom",
+					"email": "Email",
+					"message": "Message",
+					"send-message": "Envoyer le Message",
+					"location": "Localisation",
+					"phone": "Téléphone",
+					"social": "Réseaux Sociaux"
+				}
+			};
 
-				let currentLang = localStorage.getItem('lang') || 'en';
+			let currentLang = localStorage.getItem('lang') || 'en';
+			document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
+			updateLanguage();
+
+			document.getElementById('lang-toggle').addEventListener('click', () => {
+				currentLang = currentLang === 'en' ? 'fr' : 'en';
+				localStorage.setItem('lang', currentLang);
 				document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
 				updateLanguage();
+			});
 
-				document.getElementById('lang-toggle').addEventListener('click', () => {
-					currentLang = currentLang === 'en' ? 'fr' : 'en';
-					localStorage.setItem('lang', currentLang);
-					document.getElementById('lang-toggle').textContent = currentLang === 'en' ? 'FR' : 'EN';
-					updateLanguage();
+			function updateLanguage() {
+				document.querySelectorAll('[data-lang]').forEach(el => {
+					const key = el.getAttribute('data-lang');
+					if (translations[currentLang][key]) {
+						el.innerHTML = translations[currentLang][key];
+					}
 				});
-
-				function updateLanguage() {
-					document.querySelectorAll('[data-lang]').forEach(el => {
-						const key = el.getAttribute('data-lang');
-						if (translations[currentLang][key]) {
-							el.innerHTML = translations[currentLang][key];
-						}
-					});
-				}
-			</script>
+			}
+			
 
 	</body>
 </html>
