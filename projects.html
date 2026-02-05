@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V61 BY Adem Rguez
+	V62 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -340,6 +340,63 @@
 			light.position.set(5, 10, 5);
 			scene.add(light);
 
+			// ===========================
+			// PHYSICS WORLD (CANNON.JS)
+			// ===========================
+
+			const world = new CANNON.World();
+			world.gravity.set(0, -9.82, 0);
+			world.broadphase = new CANNON.NaiveBroadphase();
+			world.solver.iterations = 10;
+
+			// Physics materials
+			const panelMaterial = new CANNON.Material('panel');
+			const groundMaterial = new CANNON.Material('ground');
+			const panelGroundContact = new CANNON.ContactMaterial(panelMaterial, groundMaterial, {
+				friction: 0.3,
+				restitution: 0.3
+			});
+			world.addContactMaterial(panelGroundContact);
+
+			// Invisible ground plane for panels to rest on
+			const groundShape = new CANNON.Plane();
+			const groundBody = new CANNON.Body({ mass: 0, material: groundMaterial });
+			groundBody.addShape(groundShape);
+			groundBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2);
+			groundBody.position.set(0, -5, 0);
+			world.addBody(groundBody);
+
+			// Collision detection between panels
+			world.addEventListener('beginContact', (e) => {
+				const bodyA = e.bodyA;
+				const bodyB = e.bodyB;
+
+				// Find which panels are colliding
+				const panelA = panels.find(p => p.userData.physicsBody === bodyA);
+				const panelB = panels.find(p => p.userData.physicsBody === bodyB);
+
+				if (panelA && panelB) {
+					// Highlight colliding panels
+					panelA.material.emissiveIntensity = 0.8;
+					panelB.material.emissiveIntensity = 0.8;
+				}
+			});
+
+			world.addEventListener('endContact', (e) => {
+				const bodyA = e.bodyA;
+				const bodyB = e.bodyB;
+
+				// Find which panels were colliding
+				const panelA = panels.find(p => p.userData.physicsBody === bodyA);
+				const panelB = panels.find(p => p.userData.physicsBody === bodyB);
+
+				if (panelA && panelB) {
+					// Restore normal highlight
+					panelA.material.emissiveIntensity = panelA === hovered ? 0.6 : 0.25;
+					panelB.material.emissiveIntensity = panelB === hovered ? 0.6 : 0.25;
+				}
+			});
+
 
 
 			// ===========================
@@ -409,6 +466,22 @@
 
 			// Scale down on mobile
 			panel.scale.setScalar(panelScale);
+
+			// Add physics body to panel
+			const panelShape = new CANNON.Box(new CANNON.Vec3(1 * panelScale, 1 * panelScale, 0.75 * panelScale));
+			const panelBody = new CANNON.Body({
+				mass: 1,
+				material: panelMaterial,
+				linearDamping: 0.5,
+				angularDamping: 0.5
+			});
+			panelBody.addShape(panelShape);
+			panelBody.position.copy(panel.position);
+			panelBody.quaternion.copy(panel.quaternion);
+			world.addBody(panelBody);
+
+			// Store physics body reference in mesh
+			panel.userData.physicsBody = panelBody;
 
 			scene.add(panel);
 			panels.push(panel);
@@ -537,6 +610,13 @@
 						selected.position
 					);
 					offset.copy(intersects[0].point).sub(selected.position);
+
+					// Make physics body kinematic while dragging
+					if (selected.userData.physicsBody) {
+						selected.userData.physicsBody.type = CANNON.Body.KINEMATIC;
+						selected.userData.physicsBody.velocity.set(0, 0, 0);
+						selected.userData.physicsBody.angularVelocity.set(0, 0, 0);
+					}
 				}
 			});
 
@@ -563,6 +643,13 @@
 							selected.position
 						);
 						offset.copy(intersects[0].point).sub(selected.position);
+
+						// Make physics body kinematic while dragging
+						if (selected.userData.physicsBody) {
+							selected.userData.physicsBody.type = CANNON.Body.KINEMATIC;
+							selected.userData.physicsBody.velocity.set(0, 0, 0);
+							selected.userData.physicsBody.angularVelocity.set(0, 0, 0);
+						}
 					}
 				} else if (e.touches.length === 2 && selected) {
 					// Initialize pinch for scaling
@@ -583,11 +670,20 @@
 				if (rotationMode) {
 					selected.rotation.y += deltaX * 2;
 					selected.rotation.x -= deltaY * 2;
+					// Sync rotation with physics body
+					if (selected.userData.physicsBody) {
+						selected.userData.physicsBody.quaternion.copy(selected.quaternion);
+					}
 				} else {
 					raycaster.setFromCamera(mouse, camera);
 					const point = new THREE.Vector3();
 					raycaster.ray.intersectPlane(dragPlane, point);
-					selected.position.copy(point.sub(offset));
+					const newPos = point.sub(offset);
+					selected.position.copy(newPos);
+					// Update physics body position
+					if (selected.userData.physicsBody) {
+						selected.userData.physicsBody.position.set(newPos.x, newPos.y, newPos.z);
+					}
 				}
 				prevMouseX = mouse.x;
 				prevMouseY = mouse.y;
@@ -610,13 +706,22 @@
 					if (rotationMode) {
 						selected.rotation.y += deltaX * 2;
 						selected.rotation.x -= deltaY * 2;
+						// Sync rotation with physics body
+						if (selected.userData.physicsBody) {
+							selected.userData.physicsBody.quaternion.copy(selected.quaternion);
+						}
 					} else {
 						mouse.x = newMouseX;
 						mouse.y = newMouseY;
 						raycaster.setFromCamera(mouse, camera);
 						const point = new THREE.Vector3();
 						raycaster.ray.intersectPlane(dragPlane, point);
-						selected.position.copy(point.sub(offset));
+						const newPos = point.sub(offset);
+						selected.position.copy(newPos);
+						// Update physics body position
+						if (selected.userData.physicsBody) {
+							selected.userData.physicsBody.position.set(newPos.x, newPos.y, newPos.z);
+						}
 					}
 					prevMouseX = newMouseX;
 					prevMouseY = newMouseY;
@@ -627,6 +732,17 @@
 					const currentPinchDistance = Math.sqrt(dx * dx + dy * dy);
 					const scaleFactor = currentPinchDistance / initialPinchDistance;
 					selected.scale.setScalar(initialScale * scaleFactor);
+
+					// Update physics body shape for new scale
+					if (selected.userData.physicsBody) {
+						selected.userData.physicsBody.shapes = [];
+						const newShape = new CANNON.Box(new CANNON.Vec3(
+							1 * selected.scale.x,
+							1 * selected.scale.y,
+							0.75 * selected.scale.z
+						));
+						selected.userData.physicsBody.addShape(newShape);
+					}
 				}
 			}, { passive: true });
 
@@ -636,6 +752,10 @@
 					const target = document.getElementById(selected.userData.anchor);
 					if (target) target.scrollIntoView({ behavior: "smooth" });
 				}
+				// Restore physics body to dynamic
+				if (selected?.userData.physicsBody) {
+					selected.userData.physicsBody.type = CANNON.Body.DYNAMIC;
+				}
 				selected = null;
 			});
 
@@ -644,6 +764,10 @@
 				if (selected?.userData.anchor && !dragged) {
 					const target = document.getElementById(selected.userData.anchor);
 					if (target) target.scrollIntoView({ behavior: "smooth" });
+				}
+				// Restore physics body to dynamic
+				if (selected?.userData.physicsBody) {
+					selected.userData.physicsBody.type = CANNON.Body.DYNAMIC;
 				}
 				selected = null;
 				initialPinchDistance = null;
@@ -656,6 +780,17 @@
 					e.preventDefault();
 					const scaleFactor = e.deltaY > 0 ? 0.95 : 1.05;
 					selected.scale.multiplyScalar(scaleFactor);
+
+					// Update physics body shape for new scale
+					if (selected.userData.physicsBody) {
+						selected.userData.physicsBody.shapes = [];
+						const newShape = new CANNON.Box(new CANNON.Vec3(
+							1 * selected.scale.x,
+							1 * selected.scale.y,
+							0.75 * selected.scale.z
+						));
+						selected.userData.physicsBody.addShape(newShape);
+					}
 				}
 			});
 
@@ -683,8 +818,17 @@
 
 			const time = Date.now() * 0.001;
 
+			// Step physics world
+			world.step(1 / 60);
+
+			// Sync Three.js meshes with Cannon.js bodies
 			panels.forEach((p, i) => {
-				p.position.y += Math.sin(time + i) * 0.0005;
+				if (p.userData.physicsBody && !selected) {
+					p.position.copy(p.userData.physicsBody.position);
+					p.quaternion.copy(p.userData.physicsBody.quaternion);
+					// Add gentle floating animation
+					p.userData.physicsBody.applyForce(new CANNON.Vec3(0, Math.sin(time + i) * 0.01, 0), p.userData.physicsBody.position);
+				}
 			});
 
 			// Animate background cubes
