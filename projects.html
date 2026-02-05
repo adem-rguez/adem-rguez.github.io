@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V60 BY Adem Rguez
+	V61 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -357,8 +357,8 @@
 			const videoTextures = [];
 
 			// Panel scale and spacing based on device
-			const panelScale = isMobile ? 0.7 : 1.0;
-			const panelSpacing = isMobile ? 2.0 : 3.0;
+			const panelScale = isMobile ? 0.5 : 1.0;
+			const panelSpacing = isMobile ? 1.5 : 3.0;
 			const panelZOffset = isMobile ? -1.0 : -1.5;
 
 			videoProjects.forEach((item, i) => {
@@ -399,7 +399,7 @@
 
 			// Center panels on mobile, spread on desktop
 			panel.position.set(
-				isMobile ? 0 : (i - (videoProjects.length - 1) / 2) * panelSpacing,
+				(i - (videoProjects.length - 1) / 2) * panelSpacing,
 				Math.random() * 1.5,
 				isMobile ? panelZOffset : -i * 1.5
 			);
