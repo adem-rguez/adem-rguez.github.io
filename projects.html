@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V62 BY Adem Rguez
+	V63 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -345,7 +345,7 @@
 			// ===========================
 
 			const world = new CANNON.World();
-			world.gravity.set(0, -9.82, 0);
+			world.gravity.set(0, 0, 0); // No gravity - panels float in space
 			world.broadphase = new CANNON.NaiveBroadphase();
 			world.solver.iterations = 10;
 
