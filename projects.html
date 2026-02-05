@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-	V58 BY Adem Rguez
+	V60 BY Adem Rguez
 -->
 <html>
 	<head>
@@ -316,13 +316,17 @@
 			const stars = new THREE.Points(starGeometry, starMaterial);
 			scene.add(stars);
 
+			// Mobile detection
+			const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+
 			const camera = new THREE.PerspectiveCamera(
 			60,
 			window.innerWidth / window.innerHeight,
 			0.1,
 			2000
 			);
-			camera.position.set(0, 1, 6);
+			// Adjust camera position for mobile (closer to center panels)
+			camera.position.set(0, 1, isMobile ? 4.5 : 6);
 
 			const renderer = new THREE.WebGLRenderer({
 			canvas: document.getElementById("threejs-canvas"),
@@ -342,6 +346,7 @@
 			// VIDEO PANELS (WEBM)
 			// ===========================
 
+			
 			const videoProjects = [
 			{ video: "PolyT/polyt demo.webm", anchor: "vr-trauma" },
 			{ video: "Saint-Gobain/saint-gobain.webm", anchor: "saint-gobain" },
@@ -350,6 +355,11 @@
 
 			const panels = [];
 			const videoTextures = [];
+
+			// Panel scale and spacing based on device
+			const panelScale = isMobile ? 0.7 : 1.0;
+			const panelSpacing = isMobile ? 2.0 : 3.0;
+			const panelZOffset = isMobile ? -1.0 : -1.5;
 
 			videoProjects.forEach((item, i) => {
 			// Create video element
@@ -379,7 +389,7 @@
 			//switch box geometry to sphere geometry
 			//const geometry = new THREE.SphereGeometry(2, 32, 32);
 
-			// Rounded box geometry
+			// Rounded box geometry - scaled for mobile
 			const geometry = new THREE.BoxGeometry(2, 2, 1.5, 64, 64, 64);
 
 			//const geometry = new THREE.BoxGeometry(2, 2, 1.5);
@@ -387,14 +397,18 @@
 
 			panel.userData.anchor = item.anchor;
 
+			// Center panels on mobile, spread on desktop
 			panel.position.set(
-				(i - (videoProjects.length - 1) / 2) * 3,
+				isMobile ? 0 : (i - (videoProjects.length - 1) / 2) * panelSpacing,
 				Math.random() * 1.5,
-				-i * 1.5
+				isMobile ? panelZOffset : -i * 1.5
 			);
 
 			panel.rotation.y = Math.PI / 6;
 			panel.rotation.x = -Math.PI / 12;
+
+			// Scale down on mobile
+			panel.scale.setScalar(panelScale);
 
 			scene.add(panel);
 			panels.push(panel);
@@ -402,6 +416,7 @@
 
 			// Background cubes (comet belt)
 			const bgCubes = [];
+			const bgCubeScale = isMobile ? 0.05 : 0.1;
 			for (let layer = 0; layer < 5; layer++) {
 				const baseRadius = 5 + layer * 6;
 				const numCubes = 20;
@@ -428,7 +443,7 @@
 					bgCube.userData.orbitSpeed = 0.0003 + Math.random() * 0.0002;
 					bgCube.userData.radius = radius;
 					bgCube.userData.baseHeight = height;
-					bgCube.scale.setScalar(0.1 + Math.random() * 0.1);
+					bgCube.scale.setScalar(bgCubeScale + Math.random() * bgCubeScale);
 					scene.add(bgCube);
 					bgCubes.push(bgCube);
 				}
