@@ -1,0 +1,74 @@
+{
+  "01": {
+    "nom": "Guadeloupe",
+    "text": ""
+  },
+  "02": {
+    "nom": "Martinique",
+    "text": ""
+  },
+  "03": {
+    "nom": "Guyane",
+    "text": ""
+  },
+  "04": {
+    "nom": "La Réunion",
+    "text": ""
+  },
+  "06": {
+    "nom": "Mayotte",
+    "text": ""
+  },
+  "11": {
+    "nom": "Île-de-France",
+    "text": ""
+  },
+  "24": {
+    "nom": "Centre-Val de Loire",
+    "text": ""
+  },
+  "27": {
+    "nom": "Bourgogne-Franche-Comté",
+    "text": ""
+  },
+  "28": {
+    "nom": "Normandie",
+    "text": ""
+  },
+  "32": {
+    "nom": "Hauts-de-France",
+    "text": ""
+  },
+  "44": {
+    "nom": "Grand Est",
+    "text": ""
+  },
+  "52": {
+    "nom": "Pays de la Loire",
+    "text": ""
+  },
+  "53": {
+    "nom": "Bretagne",
+    "text": ""
+  },
+  "75": {
+    "nom": "Nouvelle-Aquitaine",
+    "text": ""
+  },
+  "76": {
+    "nom": "Occitanie",
+    "text": ""
+  },
+  "84": {
+    "nom": "Auvergne-Rhône-Alpes",
+    "text": ""
+  },
+  "93": {
+    "nom": "Provence-Alpes-Côte d'Azur",
+    "text": ""
+  },
+  "94": {
+    "nom": "Corse",
+    "text": ""
+  }
+}
