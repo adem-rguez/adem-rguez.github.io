@@ -1,18 +1,29 @@
 {
   "971": {
     "nom": "Guadeloupe",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "972": {
     "nom": "Martinique",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "973": {
     "nom": "Guyane",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "974": {
     "nom": "La Réunion",
@@ -26,33 +37,56 @@
   },
   "75": {
     "nom": "Paris",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "77": {
     "nom": "Seine-et-Marne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "78": {
     "nom": "Yvelines",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "91": {
     "nom": "Essonne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "92": {
     "nom": "Hauts-de-Seine",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "93": {
     "nom": "Seine-Saint-Denis",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "94": {
     "nom": "Val-de-Marne",
@@ -61,8 +95,10 @@
   },
   "95": {
     "nom": "Val-d’Oise",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "18": {
     "nom": "Cher",
@@ -76,13 +112,19 @@
   },
   "36": {
     "nom": "Indre",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "37": {
     "nom": "Indre-et-Loire",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "41": {
     "nom": "Loir-et-Cher",
@@ -91,48 +133,77 @@
   },
   "45": {
     "nom": "Loiret",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "21": {
     "nom": "Côte-d’Or",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "25": {
     "nom": "Doubs",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "39": {
     "nom": "Jura",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "58": {
     "nom": "Nièvre",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "70": {
     "nom": "Haute-Saône",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "71": {
     "nom": "Saône-et-Loire",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "89": {
     "nom": "Yonne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "90": {
     "nom": "Territoire de Belfort",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "14": {
     "nom": "Calvados",
@@ -151,8 +222,13 @@
   },
   "61": {
     "nom": "Orne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "76": {
     "nom": "Seine-Maritime",
@@ -161,18 +237,26 @@
   },
   "02": {
     "nom": "Aisne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "59": {
     "nom": "Nord",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "60": {
     "nom": "Oise",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "62": {
     "nom": "Pas-de-Calais",
@@ -181,93 +265,158 @@
   },
   "80": {
     "nom": "Somme",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "08": {
     "nom": "Ardennes",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "10": {
     "nom": "Aube",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "51": {
     "nom": "Marne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "52": {
     "nom": "Haute-Marne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "54": {
     "nom": "Meurthe-et-Moselle",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "55": {
     "nom": "Meuse",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "57": {
     "nom": "Moselle",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "67": {
     "nom": "Bas-Rhin",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "68": {
     "nom": "Haut-Rhin",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "88": {
     "nom": "Vosges",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "44": {
     "nom": "Loire-Atlantique",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "49": {
     "nom": "Maine-et-Loire",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "53": {
     "nom": "Mayenne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "72": {
     "nom": "Sarthe",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "85": {
     "nom": "Vendée",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "22": {
     "nom": "Côtes-d’Armor",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "29": {
     "nom": "Finistère",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "35": {
     "nom": "Ille-et-Vilaine",
@@ -276,48 +425,76 @@
   },
   "56": {
     "nom": "Morbihan",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "16": {
     "nom": "Charente",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "17": {
     "nom": "Charente-Maritime",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "19": {
     "nom": "Corrèze",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "23": {
     "nom": "Creuse",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "24": {
     "nom": "Dordogne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "33": {
     "nom": "Gironde",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "40": {
     "nom": "Landes",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "47": {
     "nom": "Lot-et-Garonne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "64": {
     "nom": "Pyrénées-Atlantiques",
@@ -326,23 +503,39 @@
   },
   "79": {
     "nom": "Deux-Sèvres",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "86": {
     "nom": "Vienne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "87": {
     "nom": "Haute-Vienne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "09": {
     "nom": "Ariège",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "11": {
     "nom": "Aude",
@@ -351,28 +544,41 @@
   },
   "12": {
     "nom": "Aveyron",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "30": {
     "nom": "Gard",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "31": {
     "nom": "Haute-Garonne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "32": {
     "nom": "Gers",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "34": {
     "nom": "Hérault",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "46": {
     "nom": "Lot",
@@ -381,8 +587,13 @@
   },
   "48": {
     "nom": "Lozère",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "65": {
     "nom": "Hautes-Pyrénées",
@@ -391,18 +602,30 @@
   },
   "66": {
     "nom": "Pyrénées-Orientales",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "81": {
     "nom": "Tarn",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "82": {
     "nom": "Tarn-et-Garonne",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "01": {
     "nom": "Ain",
@@ -411,23 +634,39 @@
   },
   "03": {
     "nom": "Allier",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "07": {
     "nom": "Ardèche",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "15": {
     "nom": "Cantal",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "26": {
     "nom": "Drôme",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "38": {
     "nom": "Isère",
@@ -436,13 +675,22 @@
   },
   "42": {
     "nom": "Loire",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "43": {
     "nom": "Haute-Loire",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "63": {
     "nom": "Puy-de-Dôme",
@@ -451,23 +699,35 @@
   },
   "69": {
     "nom": "Rhône",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "73": {
     "nom": "Savoie",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "74": {
     "nom": "Haute-Savoie",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "04": {
     "nom": "Alpes-de-Haute-Provence",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3"
+    ]
   },
   "05": {
     "nom": "Hautes-Alpes",
@@ -476,18 +736,28 @@
   },
   "06": {
     "nom": "Alpes-Maritimes",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "13": {
     "nom": "Bouches-du-Rhône",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   },
   "83": {
     "nom": "Var",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2"
+    ]
   },
   "84": {
     "nom": "Vaucluse",
@@ -496,12 +766,19 @@
   },
   "2A": {
     "nom": "Corse-du-Sud",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1"
+    ]
   },
   "2B": {
     "nom": "Haute-Corse",
-    "color": "",
-    "entities": []
+    "color": "#e6194b",
+    "entities": [
+      "Test 1",
+      "Test 2",
+      "Test 3",
+      "Test 4"
+    ]
   }
 }
