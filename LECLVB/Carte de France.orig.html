@@ -171,49 +171,63 @@
 	<script>
 	(function () {
 		var tooltip = document.getElementById('map-tooltip');
-		fetch('departments.json')
-			.then(function (r) { return r.json(); })
-			.then(function (data) {
-				document.querySelectorAll('path[data-numerodepartement]').forEach(function (path) {
-					var code = path.getAttribute('data-numerodepartement');
-					var info = data[code] || {};
-					var nom = info.nom || path.getAttribute('data-nom');
-					var entities = info.entities || [];
+		var STORAGE_KEY = 'leclvb_departments_override';
 
-					if (info.color) {
-						path.style.fill = info.color;
-					}
+		function applyData(data) {
+			document.querySelectorAll('path[data-numerodepartement]').forEach(function (path) {
+				var code = path.getAttribute('data-numerodepartement');
+				var info = data[code] || {};
+				var nom = info.nom || path.getAttribute('data-nom');
+				var entities = info.entities || [];
 
-					path.addEventListener('mousemove', function (e) {
-						tooltip.style.left = (e.clientX + 12) + 'px';
-						tooltip.style.top = (e.clientY + 12) + 'px';
-					});
-					path.addEventListener('mouseenter', function () {
-						tooltip.innerHTML = '';
-						var title = document.createElement('strong');
-						title.textContent = nom;
-						tooltip.appendChild(title);
-						if (entities.length) {
-							var list = document.createElement('ul');
-							list.style.margin = '4px 0 0';
-							list.style.paddingLeft = '16px';
-							entities.forEach(function (name) {
-								var li = document.createElement('li');
-								li.textContent = name;
-								list.appendChild(li);
-							});
-							tooltip.appendChild(list);
-						}
-						tooltip.style.display = 'block';
-					});
-					path.addEventListener('mouseleave', function () {
-						tooltip.style.display = 'none';
-					});
+				if (info.color) {
+					path.style.fill = info.color;
+				}
+
+				path.addEventListener('mousemove', function (e) {
+					tooltip.style.left = (e.clientX + 12) + 'px';
+					tooltip.style.top = (e.clientY + 12) + 'px';
 				});
-			})
-			.catch(function (err) {
-				console.error('Could not load departments.json (must be served over http/https, not opened as a local file):', err);
+				path.addEventListener('mouseenter', function () {
+					tooltip.innerHTML = '';
+					var title = document.createElement('strong');
+					title.textContent = nom;
+					tooltip.appendChild(title);
+					if (entities.length) {
+						var list = document.createElement('ul');
+						list.style.margin = '4px 0 0';
+						list.style.paddingLeft = '16px';
+						entities.forEach(function (name) {
+							var li = document.createElement('li');
+							li.textContent = name;
+							list.appendChild(li);
+						});
+						tooltip.appendChild(list);
+					}
+					tooltip.style.display = 'block';
+				});
+				path.addEventListener('mouseleave', function () {
+					tooltip.style.display = 'none';
+				});
 			});
+		}
+
+		var stored = localStorage.getItem(STORAGE_KEY);
+		if (stored) {
+			try {
+				applyData(JSON.parse(stored));
+			} catch (err) {
+				stored = null;
+			}
+		}
+		if (!stored) {
+			fetch('departments.json')
+				.then(function (r) { return r.json(); })
+				.then(applyData)
+				.catch(function (err) {
+					console.error('Could not load departments.json (must be served over http/https, not opened as a local file):', err);
+				});
+		}
 	})();
 	</script>
 	</body></html>

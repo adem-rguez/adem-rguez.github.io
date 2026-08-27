@@ -25,12 +25,14 @@
 <body>
 
 <h1>Basic-Français — Gestion des départements</h1>
-<p>Édite la couleur et la liste des entités par département, puis télécharge le fichier <code>departments.json</code> mis à jour pour remplacer celui du serveur.</p>
+<p>Édite la couleur et la liste des entités par département. <strong>Appliquer</strong> met à jour la carte immédiatement dans ce navigateur (aperçu local, pratique pour montrer au client). <strong>Télécharger</strong> produit le fichier <code>departments.json</code> définitif à envoyer sur le serveur.</p>
 
 <div class="toolbar">
 	<label for="file-input">Charger un departments.json</label>
 	<input type="file" id="file-input" accept="application/json">
+	<button id="apply-btn">Appliquer (aperçu local)</button>
 	<button id="download-btn">Télécharger le JSON mis à jour</button>
+	<button id="reset-btn">Réinitialiser depuis le fichier</button>
 </div>
 
 <div class="filter">
@@ -142,18 +144,30 @@
 		});
 	}
 
-	function loadFromObject(obj) {
+	var STORAGE_KEY = 'leclvb_departments_override';
+
+	function loadFromObject(obj, note) {
 		data = obj;
-		statusEl.textContent = Object.keys(data).length + ' départements chargés.';
+		statusEl.textContent = Object.keys(data).length + ' départements chargés.' + (note ? ' (' + note + ')' : '');
 		render();
 	}
 
-	fetch('departments.json')
-		.then(function (r) { return r.json(); })
-		.then(loadFromObject)
-		.catch(function () {
-			statusEl.textContent = "Impossible de charger departments.json automatiquement (ouverture en local ?). Utilisez « Charger un departments.json » ci-dessus.";
-		});
+	var stored = localStorage.getItem(STORAGE_KEY);
+	if (stored) {
+		try {
+			loadFromObject(JSON.parse(stored), 'aperçu local en cours');
+		} catch (err) {
+			stored = null;
+		}
+	}
+	if (!stored) {
+		fetch('departments.json')
+			.then(function (r) { return r.json(); })
+			.then(function (obj) { loadFromObject(obj, 'depuis departments.json'); })
+			.catch(function () {
+				statusEl.textContent = "Impossible de charger departments.json automatiquement (ouverture en local ?). Utilisez « Charger un departments.json » ci-dessus.";
+			});
+	}
 
 	document.getElementById('file-input').addEventListener('change', function (e) {
 		var file = e.target.files[0];
@@ -177,6 +191,18 @@
 		a.download = 'departments.json';
 		a.click();
 		URL.revokeObjectURL(url);
+	});
+
+	document.getElementById('apply-btn').addEventListener('click', function () {
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+		statusEl.textContent = 'Appliqué — ouvrez ou rafraîchissez la carte dans ce même navigateur pour voir les changements.';
+	});
+
+	document.getElementById('reset-btn').addEventListener('click', function () {
+		localStorage.removeItem(STORAGE_KEY);
+		fetch('departments.json')
+			.then(function (r) { return r.json(); })
+			.then(function (obj) { loadFromObject(obj, 'depuis departments.json'); });
 	});
 
 	filterInput.addEventListener('input', render);
