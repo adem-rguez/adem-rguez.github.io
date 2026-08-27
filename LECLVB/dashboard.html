@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Basic-Français — Gestion des départements</title>
+<style>
+	body { font-family: sans-serif; max-width: 900px; margin: 20px auto; padding: 0 16px; }
+	h1 { font-size: 20px; }
+	.toolbar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+	.toolbar button, .toolbar label { padding: 8px 14px; border: 1px solid #888; border-radius: 4px; background: #f4f4f4; cursor: pointer; font-size: 14px; }
+	.toolbar input[type="file"] { display: none; }
+	table { width: 100%; border-collapse: collapse; }
+	th, td { border-bottom: 1px solid #ddd; padding: 8px; vertical-align: top; text-align: left; }
+	th { background: #fafafa; }
+	input[type="color"] { width: 44px; height: 28px; padding: 0; border: none; cursor: pointer; }
+	.entities-list { display: flex; flex-direction: column; gap: 4px; }
+	.entity-row { display: flex; gap: 4px; }
+	.entity-row input { flex: 1; }
+	.entity-row button, .add-entity { background: none; border: 1px solid #ccc; border-radius: 3px; cursor: pointer; }
+	.status { font-size: 13px; color: #666; margin-top: 12px; }
+	.filter { margin-bottom: 12px; }
+	.filter input { padding: 6px; width: 240px; }
+</style>
+</head>
+<body>
+
+<h1>Basic-Français — Gestion des départements</h1>
+<p>Édite la couleur et la liste des entités par département, puis télécharge le fichier <code>departments.json</code> mis à jour pour remplacer celui du serveur.</p>
+
+<div class="toolbar">
+	<label for="file-input">Charger un departments.json</label>
+	<input type="file" id="file-input" accept="application/json">
+	<button id="download-btn">Télécharger le JSON mis à jour</button>
+</div>
+
+<div class="filter">
+	<input type="text" id="filter-input" placeholder="Filtrer par nom de département…">
+</div>
+
+<table>
+	<thead>
+		<tr>
+			<th style="width:160px">Département</th>
+			<th style="width:60px">Couleur</th>
+			<th>Entités</th>
+		</tr>
+	</thead>
+	<tbody id="rows"></tbody>
+</table>
+
+<div class="status" id="status">Chargement de departments.json…</div>
+
+<script>
+(function () {
+	var data = {};
+	var rowsEl = document.getElementById('rows');
+	var statusEl = document.getElementById('status');
+	var filterInput = document.getElementById('filter-input');
+
+	function sortedCodes() {
+		return Object.keys(data).sort(function (a, b) {
+			return data[a].nom.localeCompare(data[b].nom, 'fr');
+		});
+	}
+
+	function render() {
+		var filter = filterInput.value.trim().toLowerCase();
+		rowsEl.innerHTML = '';
+		sortedCodes().forEach(function (code) {
+			var entry = data[code];
+			if (filter && entry.nom.toLowerCase().indexOf(filter) === -1) return;
+
+			var tr = document.createElement('tr');
+
+			var nameTd = document.createElement('td');
+			nameTd.textContent = entry.nom + ' (' + code + ')';
+			tr.appendChild(nameTd);
+
+			var colorTd = document.createElement('td');
+			var colorInput = document.createElement('input');
+			colorInput.type = 'color';
+			colorInput.value = entry.color || '#86aae0';
+			colorInput.addEventListener('input', function () {
+				entry.color = colorInput.value;
+			});
+			colorTd.appendChild(colorInput);
+			tr.appendChild(colorTd);
+
+			var entitiesTd = document.createElement('td');
+			var list = document.createElement('div');
+			list.className = 'entities-list';
+
+			function addEntityRow(value) {
+				var row = document.createElement('div');
+				row.className = 'entity-row';
+
+				var input = document.createElement('input');
+				input.type = 'text';
+				input.value = value || '';
+				input.placeholder = "Nom de l'entité";
+				input.addEventListener('input', function () {
+					syncEntities();
+				});
+
+				var removeBtn = document.createElement('button');
+				removeBtn.type = 'button';
+				removeBtn.textContent = '✕';
+				removeBtn.title = 'Retirer';
+				removeBtn.addEventListener('click', function () {
+					row.remove();
+					syncEntities();
+				});
+
+				row.appendChild(input);
+				row.appendChild(removeBtn);
+				list.appendChild(row);
+			}
+
+			function syncEntities() {
+				var values = [];
+				list.querySelectorAll('input[type="text"]').forEach(function (input) {
+					if (input.value.trim()) values.push(input.value.trim());
+				});
+				entry.entities = values;
+			}
+
+			(entry.entities || []).forEach(function (name) { addEntityRow(name); });
+
+			var addBtn = document.createElement('button');
+			addBtn.type = 'button';
+			addBtn.className = 'add-entity';
+			addBtn.textContent = '+ Ajouter une entité';
+			addBtn.addEventListener('click', function () {
+				addEntityRow('');
+			});
+
+			entitiesTd.appendChild(list);
+			entitiesTd.appendChild(addBtn);
+			tr.appendChild(entitiesTd);
+
+			rowsEl.appendChild(tr);
+		});
+	}
+
+	function loadFromObject(obj) {
+		data = obj;
+		statusEl.textContent = Object.keys(data).length + ' départements chargés.';
+		render();
+	}
+
+	fetch('departments.json')
+		.then(function (r) { return r.json(); })
+		.then(loadFromObject)
+		.catch(function () {
+			statusEl.textContent = "Impossible de charger departments.json automatiquement (ouverture en local ?). Utilisez « Charger un departments.json » ci-dessus.";
+		});
+
+	document.getElementById('file-input').addEventListener('change', function (e) {
+		var file = e.target.files[0];
+		if (!file) return;
+		var reader = new FileReader();
+		reader.onload = function () {
+			try {
+				loadFromObject(JSON.parse(reader.result));
+			} catch (err) {
+				statusEl.textContent = 'Fichier JSON invalide.';
+			}
+		};
+		reader.readAsText(file);
+	});
+
+	document.getElementById('download-btn').addEventListener('click', function () {
+		var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+		var url = URL.createObjectURL(blob);
+		var a = document.createElement('a');
+		a.href = url;
+		a.download = 'departments.json';
+		a.click();
+		URL.revokeObjectURL(url);
+	});
+
+	filterInput.addEventListener('input', render);
+})();
+</script>
+
+</body>
+</html>

@@ -167,4 +167,59 @@
 			</g></svg>
 		</div>
 
+	<div id="map-tooltip" style="position:fixed;pointer-events:none;display:none;background:rgba(0,0,0,0.85);color:#fff;padding:6px 10px;border-radius:4px;font:13px/1.4 sans-serif;max-width:260px;z-index:1000;"></div>
+	<script>
+	(function () {
+		var tooltip = document.getElementById('map-tooltip');
+		fetch('departments.json')
+			.then(function (r) { return r.json(); })
+			.then(function (data) {
+				document.querySelectorAll('path[data-numerodepartement]').forEach(function (path) {
+					var code = path.getAttribute('data-numerodepartement');
+					var info = data[code] || {};
+					var nom = info.nom || path.getAttribute('data-nom');
+					var entities = info.entities || [];
+
+					if (info.color) {
+						path.style.fill = info.color;
+					}
+
+					path.addEventListener('mousemove', function (e) {
+						tooltip.style.left = (e.clientX + 12) + 'px';
+						tooltip.style.top = (e.clientY + 12) + 'px';
+					});
+					path.addEventListener('mouseenter', function () {
+						tooltip.innerHTML = '';
+						var title = document.createElement('strong');
+						title.textContent = nom;
+						tooltip.appendChild(title);
+						if (entities.length) {
+							var list = document.createElement('ul');
+							list.style.margin = '4px 0 0';
+							list.style.paddingLeft = '16px';
+							entities.forEach(function (name) {
+								var li = document.createElement('li');
+								li.textContent = name;
+								list.appendChild(li);
+							});
+							tooltip.appendChild(list);
+						} else {
+							var none = document.createElement('div');
+							none.style.opacity = '0.7';
+							none.style.marginTop = '4px';
+							none.textContent = 'Aucune entité renseignée';
+							tooltip.appendChild(none);
+						}
+						tooltip.style.display = 'block';
+					});
+					path.addEventListener('mouseleave', function () {
+						tooltip.style.display = 'none';
+					});
+				});
+			})
+			.catch(function (err) {
+				console.error('Could not load departments.json (must be served over http/https, not opened as a local file):', err);
+			});
+	})();
+	</script>
 	</body></html>
